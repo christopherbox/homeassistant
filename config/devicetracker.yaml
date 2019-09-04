@@ -1,0 +1,7 @@
+- platform: google_maps
+  username: !secret email
+  password: !secret gps_password_key
+- platform: nmap_tracker
+  hosts: !secret nmaphosts
+  home_interval: 10
+- platform: bluetooth_tracker

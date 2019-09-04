@@ -1,0 +1,10 @@
+*.conf
+.google*
+customize.yaml
+home-assistant*
+ip_bans.yaml
+known_devices.yaml
+.ps4-games.json
+secrets.yaml
+.storage
+ssl

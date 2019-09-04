@@ -1,0 +1,4 @@
+- platform: nfandroidtv
+  name: LivingRoomTV
+  host: !secret braviaip
+  position: top-right

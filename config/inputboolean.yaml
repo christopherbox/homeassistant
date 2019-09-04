@@ -1,0 +1,12 @@
+chrishome:
+  name: Chris Home
+  icon: mdi:cellphone-iphone
+kathrynhome:
+  name: Kathryn Home
+  icon: mdi:cellphone-iphone
+familyhome:
+  name: Family Member Home
+  icon: mdi:account-multiple
+plexlivingroom:
+  name: Plex Living Room
+  icon: mdi:plex

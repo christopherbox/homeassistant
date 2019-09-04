@@ -1,0 +1,211 @@
+- name: "BabyTime"
+  entities:
+     light.baby_light:
+       state: true
+       xy_color: [0.701,0.299]
+       brightness_pct: 40
+     light.computer_lamp:
+       state: false
+     light.picture_light:
+       state: false
+     light.bookshelf_lamp:
+       state: false
+     light.speaker_lamp:
+       state: false
+     light.couch_lamp:
+       state: false
+     group.kitchen_lights:
+       state: false
+
+- name: "BedroomDay"
+  entities:
+     light.kathryn_lamp:
+       state: true
+     light.chris_lamp:
+       state: true
+       color_temp: 154
+       brightness_pct: 100
+       transition: 1
+     light.horsecolour:
+       state: true
+       color_temp: 154
+       brightness_pct: 100
+     light.horselight:
+       state: true
+       color_temp: 154
+       brightness_pct: 100
+
+- name: "BabyTimeBedroom"
+  entities:
+     light.kathryn_lamp:
+       state: false
+     light.chris_lamp:
+       state: false
+     light.horsecolour:
+       state: false
+     light.horselight:
+       state: false
+
+- name: "BookTime"
+  entities:
+     light.kathryn_lamp:
+       state: true
+       brightness_pct: 35
+     light.chris_lamp:
+       state: false
+     light.horsecolour:
+       state: false
+     light.horselight:
+       state: false
+
+- name: "NormalLights"
+  entities:
+     group.all_lights:
+      state: true
+      color_temp: 154
+      transition: 1
+      brightness_pct: 100
+     light.baby_light:
+      state: true
+      brightness_pct: 50
+      color_temp: 154
+      transition: 1
+
+- name: "LightsOnTime"
+  entities:
+    group.living_room_lights:
+      state: true
+      color_temp: 154
+      transition: 3
+      brightness_pct: 100
+    group.kitchen_lights:
+      state: true
+      color_temp: 154
+      brightness_pct: 100
+      transition: 3
+    light.baby_light:
+      state: true
+      brightness_pct: 50
+      color_temp: 154
+      transition: 3
+
+- name: "LightsOnTimeSlow"
+  entities:
+    group.living_room_lights:
+      state: true
+      color_temp: 154
+      transition: 3600
+      brightness_pct: 100
+    group.kitchen_lights:
+      state: true
+      color_temp: 154
+      brightness_pct: 100
+      transition: 3600
+    light.baby_light:
+      state: true
+      brightness_pct: 50
+      color_temp: 154
+      transition: 3600
+
+- name: "LightsPlex"
+  entities:
+    group.living_room_lights:
+      state: true
+      transition: 10
+      brightness_pct: 10
+      xy_color: [0.672,0.324]
+    group.kitchen_lights:
+      state: false
+      transition: 10
+
+- name: "LightsPlexPause"
+  entities:
+    group.kitchen_lights:
+      state: true
+      brightness_pct: 75
+      color_temp: 154
+      transition: 2
+    light.speaker_lamp:
+      state: true
+      brightness_pct: 75
+      color_temp: 154
+      transition: 2
+    light.couch_lamp:
+      state: true
+      brightness_pct: 75
+      color_temp: 154
+      transition: 2
+
+- name: "LightsOnGettingDark"
+  entities:
+    light.baby_light:
+      state: true
+      brightness_pct: 50
+      color_temp: 500
+      transition: 60
+    light.computer_lamp:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 60
+    light.bookshelf_lamp:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 60
+    light.speaker_lamp:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 60
+    light.couch_lamp:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 60
+    light.picture_light:
+      state: true
+      brightness: 49
+      xy_color: [0.249,0.092]
+    group.kitchen_lights:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 60
+
+- name: "LightsOnGettingDarkSlow"
+  entities:
+    light.baby_light:
+      state: true
+      brightness_pct: 50
+      color_temp: 500
+      transition: 3600
+    light.computer_lamp:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 3600
+    light.bookshelf_lamp:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 3600
+    light.speaker_lamp:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 3600
+    light.couch_lamp:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 3600
+    light.picture_light:
+      state: true
+      brightness: 49
+      xy_color: [0.249,0.092]
+    group.kitchen_lights:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 3600

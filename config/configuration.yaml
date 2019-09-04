@@ -1,0 +1,118 @@
+#Enable Binary sensor data for hue
+binary_sensor:
+  - platform: huesensor
+
+#Cloud
+cloud:
+
+# Enables configuration UI
+config:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Discover some devices automatically
+discovery:
+
+#Allows for streaming stream data
+ffmpeg:
+
+# Enables the frontend
+frontend:
+  themes: !include themes.yaml
+
+# Enables support for tracking state changes over time
+history:
+
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 170
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret home_timezone
+  # Customization file
+  customize: !include customize.yaml
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+#Enables the mariadb recording
+recorder:
+  db_url: !secret db_string
+  purge_keep_days: 7
+
+#Enables streaming of streams from cameras
+stream:
+
+# Track the sun
+sun:
+
+# Enables system health
+system_health:
+
+#TP-LINK
+tplink:
+
+# Text to speech
+tts:
+  - platform: google_translate
+    service_name: google_say
+    base_url: !secret tts_url
+
+
+# Checks for available updates
+updater:
+
+#weather
+weather:
+  - platform: darksky
+    api_key: !secret darksky_api
+
+###########################################
+####BEING IMPORTING ALL INCLUDE ACTIONS####
+###########################################
+
+august: !include august.yaml
+
+automation: !include automations.yaml
+
+camera: !include camera.yaml
+
+device_tracker: !include devicetracker.yaml
+
+google_assistant: !include googleassistant.yaml
+
+group: !include groups.yaml
+
+http: !include http.yaml
+
+input_boolean: !include inputboolean.yaml
+
+light: !include_dir_merge_list mqttlights
+
+media_player: !include mediaplayer.yaml
+
+mqtt: !include mqtt.yaml
+
+notify: !include notify.yaml
+
+scene: !include scene.yaml
+
+script: !include scripts.yaml
+
+sensor: !include sensor.yaml
+
+shell_command: !include shell_command.yaml
+
+switch: !include switch.yaml
+
+zone: !include zone.yaml

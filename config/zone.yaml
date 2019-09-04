@@ -1,0 +1,9 @@
+- name: !secret work1_name
+  latitude: !secret work1_latitude
+  longitude: !secret work1_longitude
+  radius: 100
+
+- name: !secret work2_name
+  latitude: !secret work2_latitude
+  longitude: !secret work2_longitude
+  radius: 100

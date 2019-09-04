@@ -1,0 +1,230 @@
+default_view:
+  name: Home
+  view: yes
+  entities:
+    - group.w520_sensors
+    - group.weather_sensors
+    - group.all_cameras
+    - group.people
+    - group.gmaps
+    - group.nzbget
+    - group.all_automations
+    - group.booleans
+kitchen:
+  name: Kitchen
+  view: yes
+  entities:
+    - group.kitchen_lights
+    - group.kitchen_camera
+    - light.fan_light
+living_room:
+  name: Living Room
+  view: yes
+  entities:
+    - group.living_room_lights
+    - group.living_room_home
+    - group.living_room_television
+    - group.living_room_audio
+    - group.living_room_devices
+    - group.living_room_cameras
+bedroom:
+  name: Bedroom
+  view: yes
+  entities:
+    - group.bedroom_lights
+    - group.bedroom_chromecast
+    - group.bedroom_google_home
+
+#-------------
+#Group Entities
+#-------------
+
+people:
+  name: Households
+  entities:
+    - device_tracker.google_maps_112273907813731668515
+    - device_tracker.google_maps_114377841267658724874
+    - device_tracker.64a2f9bd08ee
+    - device_tracker.404e367fc94e
+
+booleans:
+  name: Booleans
+  entities:
+    - input_boolean.chrishome
+    - input_boolean.kathrynhome
+
+main_lights:
+  name: LivingRoom and Kitchen Lights
+  entities:
+    - group.living_room_lights
+    - group.kitchen_lights
+    - group.bedroom_lights
+gmaps:
+  name: "Google Maps"
+  entities:
+    - camera.chris
+    - camera.kathryn
+#-------------
+#Group Entities
+#-------------
+living_room_lights:
+  name: Living Room Lights
+  entities:
+    - light.speaker_lamp
+    - light.couch_lamp
+    - light.bookshelf_lamp
+    - light.picture_light
+    - light.baby_light
+
+living_room_cameras:
+  name: Living Room Cameras
+  entities:
+    - camera.ip_webcam
+    - camera.wyzecam
+    - sensor.ip_webcam_audio_connections
+    - sensor.ip_webcam_battery_level
+    - sensor.ip_webcam_battery_temperature
+    - sensor.ip_webcam_battery_voltage
+    - sensor.ip_webcam_light_level
+    - sensor.ip_webcam_motion
+    - sensor.ip_webcam_pressure
+    - sensor.ip_webcam_proximity
+    - sensor.ip_webcam_sound
+    - sensor.ip_webcam_video_connections
+
+living_room_switches:
+  name: Living Room Switches
+  entities:
+    - switch.fish_tank_light
+    - switch.fish_tank_filter
+
+living_room_google_home:
+  name: Google Home
+  entities:
+    - media_player.living_room_audio
+
+living_room_television:
+  name: Television
+  entities:
+    - media_player.bravia_4k_2015
+    - media_player.living_room_tv
+    - media_player.sony_bravia_tv
+    - sensor.boxtifers_plex
+
+living_room_audio:
+  name: Audio Components
+  entities:
+    - media_player.marantzlivingroom
+    - media_player.living_room_audio
+    - media_player.living_room_home
+
+living_room_devices:
+   name: Devices and Stats
+   entities:
+    - device_tracker.f0def17e5ab1
+    - device_tracker.0006781e0688
+    - device_tracker.001788191d23
+    - device_tracker.086a0ad82301
+    - device_tracker.10bf4889dffe
+    - device_tracker.546009e5e57e
+    - device_tracker.788a207f314a
+    - device_tracker.a47733cf1965
+    - device_tracker.ac9b0ad785c8
+    - device_tracker.b827eb64756e
+    - device_tracker.bc60a7c19e5c
+    - device_tracker.f0def17e5ab1
+    - device_tracker.fc7516871fde
+    - sensor.nzbget_download_paused
+    - sensor.nzbget_queue_size
+    - sensor.nzbget_speed
+
+w520_sensors:
+  name: "Lenovo W520 Server"
+  entities:
+    - sensor.last_boot
+    - sensor.processor_use
+    - sensor.memory_use_percent
+    - sensor.swap_use_percent
+
+weather_sensors:
+  name: "Weather"
+  entities:
+    - sensor.dark_sky_summary
+    - sensor.dark_sky_temperature
+    - sensor.dark_sky_daytime_high_temperature
+    - sensor.dark_sky_overnight_low_temperature
+    - sensor.dark_sky_daily_summary
+    - sensor.dark_sky_hourly_summary
+    - sensor.dark_sky_humidity
+    - sensor.dark_sky_wind_speed
+    - sensor.dark_sky_nearest_storm_distance
+    - sensor.dark_sky_uv_index
+
+all_cameras:
+  name: "HouseHold Cameras"
+  entities:
+    - camera.wyzecam
+    - camera.ip_webcam
+
+nzbget:
+  name: "NZBGet Stats"
+  entities:
+    - sensor.nzbget_download_paused
+    - sensor.nzbget_queue_size
+    - sensor.nzbget_speed
+
+#-----------
+#Kitchen
+#-----------
+kitchen_lights:
+  name: Kitchen Lights
+  entities:
+    - light.sink_light
+    - light.stove_light
+
+kitchen_camera:
+  name: Kitchen Camera
+  entities:
+    - camera.ip_webcam_2
+    - sensor.ip_webcam_audio_connections_2
+    - sensor.ip_webcam_battery_level_2
+    - sensor.ip_webcam_battery_temperature_2
+    - sensor.ip_webcam_battery_voltage_2
+    - sensor.ip_webcam_light_level_2
+    - sensor.ip_webcam_motion_2
+    - sensor.ip_webcam_pressure_2
+    - sensor.ip_webcam_proximity_2
+    - sensor.ip_webcam_sound_2
+    - sensor.ip_webcam_video_connections_2
+
+bedroom_lights:
+  name: BedRoom Lights
+  entities:
+    - light.kathryn_lamp
+    - light.chris_lamp
+    - light.horsecolour
+    - light.horselight
+
+bedroom_chromecast:
+  name: Bedroom TV
+  entities:
+    - media_player.bedroom_tv
+
+bedroom_google_home:
+  name: Google Home
+  entities:
+    - media_player.bedroom_home
+
+dining_room_lights:
+  name: Dining Room Lights
+  entities:
+    - light.fan_light
+
+phones:
+  name: Phones
+  entities:
+    - device_tracker.404e367fc94e
+    - device_tracker.4c664176e87f
+    - device_tracker.502e5cef4a60
+    - device_tracker.c0eefb32a864
+    - device_tracker.c0eefbd04847

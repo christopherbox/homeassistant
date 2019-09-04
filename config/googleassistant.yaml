@@ -1,0 +1,27 @@
+project_id: home-assist-bd1a0
+api_key: !secret google_assistant_api
+expose_by_default: false
+entity_config:
+  media_player.sony_bravia_tv:
+    name: "Sony TV"
+    expose: true
+  media_player.marantzlivingroom:
+    name: "Stereo"
+    aliases:
+      - "Living Room Stereo"
+    expose: true
+  lock.front_door:
+    name: "dinosaur"
+    expose: true
+  scene.babytime:
+    name: "Baby Time Living Room Lights"
+    expose: true
+  scene.babytimebedroom:
+    name: "Baby Time Bedroom"
+    expose: true
+  light.fan_rbg_light:
+    name: "Fan Light"
+    expose: true
+  light.kathryn_lamp:
+    name: "Kathryn's Lamp"
+    expose: true

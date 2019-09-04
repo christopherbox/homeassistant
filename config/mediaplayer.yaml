@@ -1,0 +1,11 @@
+- platform: denonavr
+  host: !secret denonip
+  name: MarantzLivingRoom
+  timeout: 3
+  zones:
+    - zone: Zone2
+      name: LivingRoom
+
+#BraviaTV
+- platform: braviatv
+  host: !secret braviaip

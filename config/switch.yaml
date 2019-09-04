@@ -1,0 +1,23 @@
+- platform: wake_on_lan
+  mac_address: !secret gamerigmac
+  turn_off:
+    service: shell_command.shutdown_windows
+
+- platform: template
+  switches:
+    gamingrig:
+      value_template: !secret gamerig_tracker
+      turn_on:
+        service: switch.turn_on
+        data:
+          entity_id: switch.wake_on_lan
+      turn_off:
+        service: switch.turn_off
+        data:
+          entity_id: switch.gamingrig_turnoff
+
+- platform: command_line
+  switches:
+    gamingrig_turnoff:
+      command_off: !secret gamerigoff_command 
+      friendly_name: Gaming Rig

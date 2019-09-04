@@ -1,0 +1,47 @@
+#NZBGET
+- platform: nzbget
+  host: !secret nzbgetip
+  username: !secret nzbget_username
+  password: !secret nzbget_password
+  monitored_variables:
+    - remaining_size
+    - download_rate
+    - download_paused
+
+#HUESENSOR FOR HUE LIGHTS
+- platform: huesensor
+
+#DARKSKY PLUGIN FOR WEATHER
+- platform: darksky
+  api_key: !secret darksky_api
+  monitored_conditions:
+    - summary
+    - icon
+    - nearest_storm_distance
+    - temperature
+    - apparent_temperature
+    - wind_speed
+    - humidity
+    - daily_summary
+    - hourly_summary
+    - temperature_high
+    - temperature_low
+    - uv_index
+
+#SYSTEMMONITOR FOR SYSTEM MONTIORING
+- platform: systemmonitor
+  resources:
+    - type: disk_free
+    - type: memory_use_percent
+    - type: swap_use_percent
+    - type: processor_use
+    - type: last_boot
+
+#PLEX PLUGIN
+- platform: plex
+  host: !secret plex_host
+  token: !secret plex_token
+  name: !secret plex_name
+
+#WEATHER PREDICTION BUILTIN MODULE
+- platform: yr
