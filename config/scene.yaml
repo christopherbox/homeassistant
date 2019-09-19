@@ -209,3 +209,19 @@
       brightness_pct: 100
       color_temp: 500
       transition: 3600
+
+- name: "SinkLight"
+  entities:
+    light.sink_light:
+      state: true
+      brightness_pct: 100
+      color_temp: 154
+      transition: 3
+
+- name: "SinkLightDark"
+  entities:
+    light.sink_light:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 3

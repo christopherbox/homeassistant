@@ -1,6 +1,7 @@
 *.conf
 .google*
 .uuid
+.HA_VERSION
 customize.yaml
 home-assistant*
 ip_bans.yaml

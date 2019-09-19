@@ -107,9 +107,15 @@
     - service: homeassistant.turn_off
       entity_id: group.kitchen_lights
     - service: homeassistant.turn_off
-      entity_id: switch.christmas_tree
-    - service: homeassistant.turn_off
       entity_id: media_player.bedroom_home
+
+- alias: "Turn off baby light"
+  trigger:
+    - platform: time
+      at: '23:59:59'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: light.baby_light
 
 - alias: "Baby Time - Living Room"
   trigger:
@@ -628,6 +634,7 @@
 #Camera Automations
 - id: Cast Baby Cam to Smart Display
   alias: 'Cast the baby camera to the living room smart display'
+  initial_state: false
   trigger:
     - platform: time
       at: '20:00:00'
@@ -659,6 +666,20 @@
             'night'
           {% endif %}
 
+- alias: 'Activate all of the motion sensor resets'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: automation.trigger
+      entity_id: automation.set_the_kitchen_sensor_1_motion_sensors_to_off_after_30_seconds_of_no_motion
+    - service: automation.trigger
+      entity_id: automation.set_the_kitchen_sensor_2_motion_sensors_to_off_after_30_seconds_of_no_motion
+    - service: automation.trigger
+      entity_id: automation.set_the_baby_motion_sensors_to_off_if_no_motion_has_been_received_after_120_seconds
+    - service: automation.trigger
+      entity_id: automation.set_the_sink_motion_sensors_to_off_if_no_motion_has_been_received_after_120_seconds
+
 #Motion Sensor Automation
 
 - alias: 'Set the kitchen sensor 1 motion sensors to off after 30 seconds of no motion'
@@ -687,28 +708,107 @@
         topic: "zigbee2mqtt/0x00158d0001c123e4"
         payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
 
-- alias: 'Set the living room motion sensors to off after 30 seconds of no motion'
+- alias: 'Set the Baby motion sensors to off if no motion has been received after 120 seconds'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.0x00158d0001c1238a_occupancy
-      to: 'on'
-      for:
-        seconds: 30
+  - platform: time_pattern
+    minutes: '/1'
+  condition:
+  - condition: template
+    value_template: "{% if (states.binary_sensor.baby_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.baby_sensor.last_updated)) > 120)) %}true{% endif %}"
   action:
     - service: mqtt.publish
       data:
         topic: "zigbee2mqtt/0x00158d0001c1238a"
         payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
 
-- alias: 'Set the bedroom motion sensors to off after 30 seconds of no motion'
+- id: turn on baby light when motion is around it
+  alias: 'Turn on the baby light when motion is detected'
   trigger:
     - platform: state
-      entity_id: binary_sensor.0x00158d0001c126ed_occupancy
-      to: 'on'
-      for:
-        seconds: 30
+      entity_id: binary_sensor.baby_sensor
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: input_boolean.familyhome
+      state: 'on'
+    - condition: or
+      conditions:
+      - condition: sun
+        before: sunset
+        before_offset: '-01:45:00'
+      - condition: time
+        after: '00:00:01'
+  action:
+    - service: homeassistant.turn_on
+      entity_id: light.baby_light
+
+- id: turn off baby light when motion stops
+  alias: 'Turn off the baby light when motion is stopped'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.baby_sensor
+      to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_boolean.familyhome
+      state: 'on'
+    - condition: or
+      conditions:
+      - condition: sun
+        before: sunset
+        before_offset: '-01:45:00'
+      - condition: time
+        after: '23:45:00'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: light.baby_light
+
+- alias: 'Set the sink motion sensors to off if no motion has been received after 120 seconds'
+  trigger:
+  - platform: time_pattern
+    minutes: '/1'
+  condition:
+  - condition: template
+    value_template: "{% if (states.binary_sensor.sink_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.sink_sensor.last_updated)) > 120)) %}true{% endif %}"
   action:
     - service: mqtt.publish
       data:
         topic: "zigbee2mqtt/0x00158d0001c126ed"
         payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
+
+- id: turn on sink when motion is around it
+  alias: 'Turn on the sink light when motion is detected'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sink_sensor
+      to: "on"
+  condition:
+    condition: and
+    conditions:
+      - condition: sun
+        after: sunset
+        after_offset: '-01:45:00'
+      - condition: time
+        before: '23:45:00'
+      - condition: state
+        entity_id: input_boolean.familyhome
+        state: 'on'
+  action:
+    - service: scene.turn_on
+      data_template:
+        entity_id: >
+          {% if states.sun.sun.attributes.elevation <=-2.0 %} scene.sinklightdark
+          {% else %} scene.sinklight {% endif %}
+
+- id: turn off sink when motion stops
+  alias: 'Turn off the sink light when motion is detected'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sink_sensor
+      to: 'off'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: light.sink_light
+
+#MQTT Automations
+

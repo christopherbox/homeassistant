@@ -25,3 +25,9 @@ entity_config:
   light.kathryn_lamp:
     name: "Kathryn's Lamp"
     expose: true
+  light.chris_lamp:
+    name: "Chris's Lamp"
+    expose: true
+  light.couch_lamp:
+    name: "Couch Lamp"
+    expose: true
