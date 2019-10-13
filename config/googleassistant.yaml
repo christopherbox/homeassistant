@@ -1,6 +1,8 @@
 project_id: home-assist-bd1a0
 api_key: !secret google_assistant_api
-expose_by_default: false
+expose_by_default: true
+exposed_domains:
+    - light
 entity_config:
   media_player.sony_bravia_tv:
     name: "Sony TV"
@@ -18,16 +20,4 @@ entity_config:
     expose: true
   scene.babytimebedroom:
     name: "Baby Time Bedroom"
-    expose: true
-  light.fan_rbg_light:
-    name: "Fan Light"
-    expose: true
-  light.kathryn_lamp:
-    name: "Kathryn's Lamp"
-    expose: true
-  light.chris_lamp:
-    name: "Chris's Lamp"
-    expose: true
-  light.couch_lamp:
-    name: "Couch Lamp"
     expose: true

@@ -59,6 +59,7 @@ main_lights:
     - group.living_room_lights
     - group.kitchen_lights
     - group.bedroom_lights
+    - group.dining_room_lights
 gmaps:
   name: "Google Maps"
   entities:
@@ -202,7 +203,6 @@ bedroom_lights:
   entities:
     - light.kathryn_lamp
     - light.chris_lamp
-    - light.horsecolour
     - light.horselight
 
 bedroom_chromecast:
@@ -218,7 +218,7 @@ bedroom_google_home:
 dining_room_lights:
   name: Dining Room Lights
   entities:
-    - light.fan_light
+    - light.fan_rbg_light
 
 phones:
   name: Phones

@@ -26,10 +26,6 @@
        color_temp: 154
        brightness_pct: 100
        transition: 1
-     light.horsecolour:
-       state: true
-       color_temp: 154
-       brightness_pct: 100
      light.horselight:
        state: true
        color_temp: 154
@@ -41,8 +37,6 @@
        state: false
      light.chris_lamp:
        state: false
-     light.horsecolour:
-       state: false
      light.horselight:
        state: false
 
@@ -52,8 +46,6 @@
        state: true
        brightness_pct: 35
      light.chris_lamp:
-       state: false
-     light.horsecolour:
        state: false
      light.horselight:
        state: false
@@ -221,6 +213,22 @@
 - name: "SinkLightDark"
   entities:
     light.sink_light:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 3
+
+- name: "StoveLight"
+  entities:
+    light.stove_light:
+      state: true
+      brightness_pct: 100
+      color_temp: 154
+      transition: 3
+
+- name: "StoveLightDark"
+  entities:
+    light.stove_light:
       state: true
       brightness_pct: 100
       color_temp: 500

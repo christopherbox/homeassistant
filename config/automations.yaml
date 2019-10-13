@@ -365,9 +365,11 @@
 - id: dimmer_button1_click
   alias: 'Button to turn on bedroom lights'
   trigger:
-    - platform: state
-      entity_id: sensor.home_switch
-      to: '1_click_up'
+    platform: mqtt
+    topic: 'zigbee2mqtt/0x0017880102d61899'
+  condition:
+    - condition: template
+      value_template: "{{trigger.payload_json.action == 'on-press'}}"
   action:
     - service: scene.turn_on
       entity_id: scene.bedroomday
@@ -375,9 +377,11 @@
 - id: dimmer_button1_hold
   alias: 'Button to turn on night babytime'
   trigger:
-    - platform: state
-      entity_id: sensor.home_switch
-      to: '1_hold_up'
+    platform: mqtt
+    topic: 'zigbee2mqtt/0x0017880102d61899'
+  condition:
+    - condition: template
+      value_template: "{{trigger.payload_json.action == 'on-hold'}}"
   action:
     - service: scene.turn_on
       entity_id: scene.babytimebedroom
@@ -385,9 +389,11 @@
 - id: dimmer_button2_click
   alias: 'Button to turn on main lights'
   trigger:
-    - platform: state
-      entity_id: sensor.home_switch
-      to: '2_click_up'
+    platform: mqtt
+    topic: 'zigbee2mqtt/0x0017880102d61899'
+  condition:
+    - condition: template
+      value_template: "{{trigger.payload_json.action == 'up-press'}}"
   action:
     - service: automation.trigger
       entity_id: automation.lights_to_different_brightness
@@ -395,9 +401,11 @@
 - id: dimmer_button2_hold
   alias: 'Button to make it baby time'
   trigger:
-    - platform: state
-      entity_id: sensor.home_switch
-      to: '2_hold_up'
+    platform: mqtt
+    topic: 'zigbee2mqtt/0x0017880102d61899'
+  condition:
+    - condition: template
+      value_template: "{{trigger.payload_json.action == 'up-hold'}}"
   action:
     - service: scene.turn_on
       entity_id: scene.babytime
@@ -405,9 +413,11 @@
 - id: dimmer_button3_click
   alias: 'Button to Lock the front door'
   trigger:
-    - platform: state
-      entity_id: sensor.home_switch
-      to: '3_click_up'
+    platform: mqtt
+    topic: 'zigbee2mqtt/0x0017880102d61899'
+  condition:
+    - condition: template
+      value_template: "{{trigger.payload_json.action == 'down-press'}}"
   action:
     - service: lock.lock
       entity_id: lock.front_door
@@ -415,9 +425,11 @@
 - id: dimmer_button3_hold
   alias: 'Button to Unlock the front door'
   trigger:
-    - platform: state
-      entity_id: sensor.home_switch
-      to: '3_hold_up'
+    platform: mqtt
+    topic: 'zigbee2mqtt/0x0017880102d61899'
+  condition:
+    - condition: template
+      value_template: "{{trigger.payload_json.action == 'down-hold'}}"
   action:
     - service: lock.unlock
       entity_id: lock.front_door
@@ -425,9 +437,11 @@
 - id: dimmer_button4_click
   alias: 'Button to turn off bedroom lights'
   trigger:
-    - platform: state
-      entity_id: sensor.home_switch
-      to: '4_click_up'
+    platform: mqtt
+    topic: 'zigbee2mqtt/0x0017880102d61899'
+  condition:
+    - condition: template
+      value_template: "{{trigger.payload_json.action == 'off-press'}}"
   action:
     - service: homeassistant.turn_off
       entity_id: group.bedroom_lights
@@ -435,9 +449,11 @@
 - id: dimmer_button4_hold
   alias: 'Button to turn off all main lights'
   trigger:
-    - platform: state
-      entity_id: sensor.home_switch
-      to: '4_hold_up'
+    platform: mqtt
+    topic: 'zigbee2mqtt/0x0017880102d61899'
+  condition:
+    - condition: template
+      value_template: "{{trigger.payload_json.action == 'off-hold'}}"
   action:
     - service: homeassistant.turn_off
       entity_id: group.main_lights
@@ -672,9 +688,9 @@
       event: start
   action:
     - service: automation.trigger
-      entity_id: automation.set_the_kitchen_sensor_1_motion_sensors_to_off_after_30_seconds_of_no_motion
+      entity_id: automation.set_the_living_room_motion_sensors_to_off_after_120_seconds_of_no_motion
     - service: automation.trigger
-      entity_id: automation.set_the_kitchen_sensor_2_motion_sensors_to_off_after_30_seconds_of_no_motion
+      entity_id: automation.set_the_kitchen_sensor_motion_sensors_to_off_after_120_seconds_of_no_motion
     - service: automation.trigger
       entity_id: automation.set_the_baby_motion_sensors_to_off_if_no_motion_has_been_received_after_120_seconds
     - service: automation.trigger
@@ -682,26 +698,60 @@
 
 #Motion Sensor Automation
 
-- alias: 'Set the kitchen sensor 1 motion sensors to off after 30 seconds of no motion'
+- alias: 'Set the kitchen sensor motion sensors to off after 120 seconds of no motion'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.0x00158d0001bd00d1_occupancy
-      to: 'on'
-      for:
-        seconds: 30
+  - platform: time_pattern
+    minutes: '/1'
+  condition:
+  - condition: template
+    value_template: "{% if (states.binary_sensor.kitchen_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.kitchen_sensor.last_updated)) > 120)) %}true{% endif %}"
   action:
     - service: mqtt.publish
       data:  
         topic: "zigbee2mqtt/0x00158d0001bd00d1"
         payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
 
-- alias: 'Set the kitchen sensor 2 motion sensors to off after 30 seconds of no motion'
+- id: turn on stove light when motion is around it
+  alias: 'Turn on the stove light when motion is detected'
   trigger:
     - platform: state
-      entity_id: binary_sensor.0x00158d0001c123e4_occupancy
-      to: 'on'
-      for:
-        seconds: 30
+      entity_id: binary_sensor.kitchen_sensor
+      to: "on"
+  condition:
+    condition: and
+    conditions:
+      - condition: sun
+        after: sunset
+        after_offset: '-01:45:00'
+      - condition: time
+        before: '23:45:00'
+      - condition: state
+        entity_id: input_boolean.familyhome
+        state: 'on'
+  action:
+    - service: scene.turn_on
+      data_template:
+        entity_id: >
+          {% if states.sun.sun.attributes.elevation <=-2.0 %} scene.stovelightdark
+          {% else %} scene.stovelight {% endif %}
+
+- id: turn off stove light when motion stops
+  alias: 'Turn off the stove light when motion is stopped'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_sensor
+      to: 'off'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: light.stove_light
+
+- alias: 'Set the living room motion sensors to off after 120 seconds of no motion'
+  trigger:
+  - platform: time_pattern
+    minutes: '/1'
+  condition:
+  - condition: template
+    value_template: "{% if (states.binary_sensor.living_room_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.living_room_sensor.last_updated)) > 120)) %}true{% endif %}"
   action:
     - service: mqtt.publish
       data:
