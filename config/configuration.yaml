@@ -1,7 +1,3 @@
-#Enable Binary sensor data for hue
-binary_sensor:
-  - platform: huesensor
-
 #Cloud
 cloud:
 

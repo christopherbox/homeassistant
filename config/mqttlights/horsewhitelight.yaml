@@ -1,0 +1,17 @@
+- platform: mqtt
+  name: Horse White Light
+  command_topic: "zigbee2mqtt/0x00124b001d10f685/white/set"
+  state_topic: "zigbee2mqtt/0x00124b001d10f685/white/"
+  availability_topic: "zigbee2mqtt/bridge/state"
+  xy_state_topic: "zigbee2mqtt/0x00124b001d10f685"
+  xy_command_topic: "json:zigbee2mqtt/0x00124b001d10f685/rgb/set[0].color"
+  white_value_state_topic: "zigbee2mqtt/0x00124b001d10f685"
+  white_value_command_topic: "json:zigbee2mqtt/0x00124b001d10f685[0].state_white"
+  brightness_state_topic: "zigbee2mqtt/0x00124b001d10f685"
+  brightness_command_topic: "json:zigbee2mqtt/0x00124b001d10f685[0].brightness"
+  color_temp_state_topic: "zigbee2mqtt/0x00124b001d10f685"
+  color_temp_command_topic: "json:zigbee2mqtt/0x00124b001d10f685[0].color_temp"
+  optimistic: false
+  qos: 0
+  payload_on: "ON"
+  payload_off: "OFF"

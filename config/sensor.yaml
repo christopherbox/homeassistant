@@ -3,13 +3,6 @@
   host: !secret nzbgetip
   username: !secret nzbget_username
   password: !secret nzbget_password
-  monitored_variables:
-    - remaining_size
-    - download_rate
-    - download_paused
-
-#HUESENSOR FOR HUE LIGHTS
-- platform: huesensor
 
 #DARKSKY PLUGIN FOR WEATHER
 - platform: darksky

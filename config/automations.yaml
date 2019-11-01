@@ -145,7 +145,7 @@
   trigger:
     - platform: sun
       event: sunrise
-      offset: '+00:44:59'
+      offset: '+03:33:59'
   action:
     - service: scene.turn_on
       entity_id: scene.normallights
@@ -728,11 +728,17 @@
       - condition: state
         entity_id: input_boolean.familyhome
         state: 'on'
+      - condition: state
+        entity_id: binary_sensor.sink_sensor
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.plexlivingroom
+        state: 'off'
   action:
     - service: scene.turn_on
       data_template:
         entity_id: >
-          {% if states.sun.sun.attributes.elevation <=-2.0 %} scene.stovelightdark
+          {% if states.sun.sun.attributes.elevation <=-12.0 %} scene.stovelightdark
           {% else %} scene.stovelight {% endif %}
 
 - id: turn off stove light when motion stops
@@ -741,6 +747,10 @@
     - platform: state
       entity_id: binary_sensor.kitchen_sensor
       to: 'off'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.sink_sensor
+      state: 'off'
   action:
     - service: homeassistant.turn_off
       entity_id: light.stove_light
@@ -819,7 +829,7 @@
     minutes: '/1'
   condition:
   - condition: template
-    value_template: "{% if (states.binary_sensor.sink_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.sink_sensor.last_updated)) > 120)) %}true{% endif %}"
+    value_template: "{% if (states.binary_sensor.sink_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.sink_sensor.last_updated)) > 180)) %}true{% endif %}"
   action:
     - service: mqtt.publish
       data:
@@ -843,11 +853,17 @@
       - condition: state
         entity_id: input_boolean.familyhome
         state: 'on'
+      - condition: state
+        entity_id: binary_sensor.kitchen_sensor
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.plexlivingroom
+        state: 'off'
   action:
     - service: scene.turn_on
       data_template:
         entity_id: >
-          {% if states.sun.sun.attributes.elevation <=-2.0 %} scene.sinklightdark
+          {% if states.sun.sun.attributes.elevation <=-12.0 %} scene.sinklightdark
           {% else %} scene.sinklight {% endif %}
 
 - id: turn off sink when motion stops
@@ -856,6 +872,10 @@
     - platform: state
       entity_id: binary_sensor.sink_sensor
       to: 'off'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.kitchen_sensor
+      state: 'off'
   action:
     - service: homeassistant.turn_off
       entity_id: light.sink_light
