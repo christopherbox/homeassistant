@@ -70,11 +70,6 @@
       color_temp: 154
       transition: 3
       brightness_pct: 100
-    group.kitchen_lights:
-      state: true
-      color_temp: 154
-      brightness_pct: 100
-      transition: 3
     light.baby_light:
       state: true
       brightness_pct: 50
@@ -88,11 +83,6 @@
       color_temp: 154
       transition: 3600
       brightness_pct: 100
-    group.kitchen_lights:
-      state: true
-      color_temp: 154
-      brightness_pct: 100
-      transition: 3600
     light.baby_light:
       state: true
       brightness_pct: 50
@@ -159,11 +149,6 @@
       state: true
       brightness: 49
       xy_color: [0.249,0.092]
-    group.kitchen_lights:
-      state: true
-      brightness_pct: 100
-      color_temp: 500
-      transition: 60
 
 - name: "LightsOnGettingDarkSlow"
   entities:
@@ -196,11 +181,6 @@
       state: true
       brightness: 49
       xy_color: [0.249,0.092]
-    group.kitchen_lights:
-      state: true
-      brightness_pct: 100
-      color_temp: 500
-      transition: 3600
 
 - name: "SinkLight"
   entities:
@@ -225,10 +205,20 @@
       brightness_pct: 100
       color_temp: 154
       transition: 3
+    light.sink_light:
+      state: true
+      brightness_pct: 100
+      color_temp: 154
+      transition: 3
 
 - name: "StoveLightDark"
   entities:
     light.stove_light:
+      state: true
+      brightness_pct: 100
+      color_temp: 500
+      transition: 3
+    light.sink_light:
       state: true
       brightness_pct: 100
       color_temp: 500

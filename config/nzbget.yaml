@@ -1,0 +1,3 @@
+host: !secret nzbgetip
+username: !secret nzbget_username
+password: !secret nzbget_password

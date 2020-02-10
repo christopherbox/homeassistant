@@ -9,3 +9,8 @@
 #BraviaTV
 - platform: braviatv
   host: !secret braviaip
+
+- platform: androidtv
+  name: Sony TV
+  host: !secret braviaip
+  device_class: androidtv

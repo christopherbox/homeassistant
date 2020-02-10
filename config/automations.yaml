@@ -143,9 +143,8 @@
 
 - alias: "Change lights back to normal - Morning"
   trigger:
-    - platform: sun
-      event: sunrise
-      offset: '+03:33:59'
+    - platform: time
+      at: '08:15:00'
   action:
     - service: scene.turn_on
       entity_id: scene.normallights
@@ -721,15 +720,12 @@
     condition: and
     conditions:
       - condition: sun
-        after: sunset
-        after_offset: '-01:45:00'
+        after: sunrise
+        after_offset: '01:30:00'
       - condition: time
         before: '23:45:00'
       - condition: state
         entity_id: input_boolean.familyhome
-        state: 'on'
-      - condition: state
-        entity_id: binary_sensor.sink_sensor
         state: 'on'
       - condition: state
         entity_id: input_boolean.plexlivingroom
@@ -738,22 +734,7 @@
     - service: scene.turn_on
       data_template:
         entity_id: >
-          {% if states.sun.sun.attributes.elevation <=-12.0 %} scene.stovelightdark
-          {% else %} scene.stovelight {% endif %}
-
-- id: turn off stove light when motion stops
-  alias: 'Turn off the stove light when motion is stopped'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.kitchen_sensor
-      to: 'off'
-  condition:
-    - condition: state
-      entity_id: binary_sensor.sink_sensor
-      state: 'off'
-  action:
-    - service: homeassistant.turn_off
-      entity_id: light.stove_light
+          scene.stovelight
 
 - alias: 'Set the living room motion sensors to off after 120 seconds of no motion'
   trigger:
@@ -846,15 +827,12 @@
     condition: and
     conditions:
       - condition: sun
-        after: sunset
-        after_offset: '-01:45:00'
+        after: sunrise
+        after_offset: '01:30:00'
       - condition: time
         before: '23:45:00'
       - condition: state
         entity_id: input_boolean.familyhome
-        state: 'on'
-      - condition: state
-        entity_id: binary_sensor.kitchen_sensor
         state: 'on'
       - condition: state
         entity_id: input_boolean.plexlivingroom
@@ -863,22 +841,27 @@
     - service: scene.turn_on
       data_template:
         entity_id: >
-          {% if states.sun.sun.attributes.elevation <=-12.0 %} scene.sinklightdark
-          {% else %} scene.sinklight {% endif %}
+          scene.sinklight
 
 - id: turn off sink when motion stops
   alias: 'Turn off the sink light when motion is detected'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.sink_sensor
-      to: 'off'
+  - platform: time_pattern
+    minutes: '/1'
   condition:
-    - condition: state
-      entity_id: binary_sensor.kitchen_sensor
-      state: 'off'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.kitchen_sensor
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.sink_sensor
+        state: 'off'
   action:
     - service: homeassistant.turn_off
       entity_id: light.sink_light
+    - service: homeassistant.turn_off
+      entity_id: light.stove_light
 
 #MQTT Automations
 

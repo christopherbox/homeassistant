@@ -1,5 +1,5 @@
 - platform: wake_on_lan
-  mac_address: !secret gamerigmac
+  mac: !secret gamerigmac
   turn_off:
     service: shell_command.shutdown_windows
 
