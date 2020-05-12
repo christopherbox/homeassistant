@@ -1,40 +1,3 @@
-default_view:
-  name: Home
-  view: yes
-  entities:
-    - group.w520_sensors
-    - group.weather_sensors
-    - group.all_cameras
-    - group.people
-    - group.gmaps
-    - group.nzbget
-    - group.all_automations
-    - group.booleans
-kitchen:
-  name: Kitchen
-  view: yes
-  entities:
-    - group.kitchen_lights
-    - group.kitchen_camera
-    - light.fan_light
-living_room:
-  name: Living Room
-  view: yes
-  entities:
-    - group.living_room_lights
-    - group.living_room_home
-    - group.living_room_television
-    - group.living_room_audio
-    - group.living_room_devices
-    - group.living_room_cameras
-bedroom:
-  name: Bedroom
-  view: yes
-  entities:
-    - group.bedroom_lights
-    - group.bedroom_chromecast
-    - group.bedroom_google_home
-
 #-------------
 #Group Entities
 #-------------
@@ -180,45 +143,13 @@ nzbget:
 kitchen_lights:
   name: Kitchen Lights
   entities:
-    - light.sink_light
-    - light.stove_light
+    - light.kitchen_light_strip
 
-kitchen_camera:
-  name: Kitchen Camera
+parent_bedroom_lights:
+  name: Parent BedRoom Lights
   entities:
-    - camera.ip_webcam_2
-    - sensor.ip_webcam_audio_connections_2
-    - sensor.ip_webcam_battery_level_2
-    - sensor.ip_webcam_battery_temperature_2
-    - sensor.ip_webcam_battery_voltage_2
-    - sensor.ip_webcam_light_level_2
-    - sensor.ip_webcam_motion_2
-    - sensor.ip_webcam_pressure_2
-    - sensor.ip_webcam_proximity_2
-    - sensor.ip_webcam_sound_2
-    - sensor.ip_webcam_video_connections_2
-
-bedroom_lights:
-  name: BedRoom Lights
-  entities:
-    - light.kathryn_lamp
+    - light.kathryns_lamp
     - light.chris_lamp
-    - light.horselight
-
-bedroom_chromecast:
-  name: Bedroom TV
-  entities:
-    - media_player.bedroom_tv
-
-bedroom_google_home:
-  name: Google Home
-  entities:
-    - media_player.bedroom_home
-
-dining_room_lights:
-  name: Dining Room Lights
-  entities:
-    - light.fan_rbg_light
 
 phones:
   name: Phones

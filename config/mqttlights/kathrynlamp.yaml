@@ -1,5 +1,5 @@
 - platform: mqtt
-  name: Kathryn Lamp
+  name: Kathryns Lamp
   command_topic: "cmnd/rgblight2/POWER"
   state_topic: "stat/rgblight2/RESULT"
   state_value_template: "{{value_json.POWER}}"

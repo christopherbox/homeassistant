@@ -2,3 +2,6 @@
   input: !secret bcam_input_string
   name: BCam
 
+- platform: ffmpeg
+  input: !secret yicam_input_string
+  name: Basement Camera

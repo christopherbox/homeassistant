@@ -1,0 +1,4 @@
+- platform: yi
+    name: Yi Camera
+    host: !secret yicamip
+    password: !secret yicampassword

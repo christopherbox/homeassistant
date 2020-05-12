@@ -13,12 +13,6 @@ entity_config:
     aliases:
       - "Living Room Stereo"
     expose: true
-  lock.front_door:
-    name: "dinosaur"
-    expose: true
-  scene.babytime:
-    name: "Baby Time Living Room Lights"
-    expose: true
-  scene.babytimebedroom:
-    name: "Baby Time Bedroom"
+  camera.bcam:
+    name: "Baby Camera"
     expose: true

@@ -41,6 +41,9 @@ logbook:
 # Enables a map showing the location of tracked devices
 map:
 
+# Enables mobile app support
+mobile_app:
+
 # Enables pi-hole integration
 pi_hole:
   host: !secret pihole_ip
@@ -122,5 +125,7 @@ sensor: !include sensor.yaml
 shell_command: !include shell_command.yaml
 
 switch: !include switch.yaml
+
+#yi: !include yi.yaml
 
 zone: !include zone.yaml
