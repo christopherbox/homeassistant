@@ -1,22 +1,3 @@
-- name: "BabyTime"
-  entities:
-     light.baby_light:
-       state: true
-       xy_color: [0.701,0.299]
-       brightness_pct: 40
-     light.computer_lamp:
-       state: false
-     light.picture_light:
-       state: false
-     light.bookshelf_lamp:
-       state: false
-     light.speaker_lamp:
-       state: false
-     light.couch_lamp:
-       state: false
-     group.kitchen_lights:
-       state: false
-
 - name: "BedroomDay"
   entities:
      light.kathryn_lamp:
@@ -52,16 +33,11 @@
 
 - name: "NormalLights"
   entities:
-     group.all_lights:
+     group.reset_lights:
       state: true
       color_temp: 154
       transition: 1
       brightness_pct: 100
-     light.baby_light:
-      state: true
-      brightness_pct: 50
-      color_temp: 154
-      transition: 1
 
 - name: "LightsOnTime"
   entities:
@@ -70,11 +46,11 @@
       color_temp: 154
       transition: 3
       brightness_pct: 100
-    light.baby_light:
+    group.family_room_lights:
       state: true
-      brightness_pct: 50
       color_temp: 154
       transition: 3
+      brightness_pct: 100
 
 - name: "LightsOnTimeSlow"
   entities:
@@ -83,11 +59,11 @@
       color_temp: 154
       transition: 3600
       brightness_pct: 100
-    light.baby_light:
+    group.family_room_lights:
       state: true
-      brightness_pct: 50
       color_temp: 154
       transition: 3600
+      brightness_pct: 100
 
 - name: "LightsPlex"
   entities:
@@ -120,17 +96,11 @@
 
 - name: "LightsOnGettingDark"
   entities:
-    light.baby_light:
-      state: true
-      brightness_pct: 50
-      color_temp: 500
-      transition: 60
-    light.computer_lamp:
+    light.rbglight1:
       state: true
       brightness_pct: 100
       color_temp: 500
-      transition: 60
-    light.bookshelf_lamp:
+    light.reading_lamp:
       state: true
       brightness_pct: 100
       color_temp: 500
@@ -145,24 +115,14 @@
       brightness_pct: 100
       color_temp: 500
       transition: 60
-    light.picture_light:
-      state: true
-      brightness: 49
-      xy_color: [0.249,0.092]
 
 - name: "LightsOnGettingDarkSlow"
   entities:
-    light.baby_light:
-      state: true
-      brightness_pct: 50
-      color_temp: 500
-      transition: 3600
-    light.computer_lamp:
+    light.rgblight1:
       state: true
       brightness_pct: 100
       color_temp: 500
-      transition: 3600
-    light.bookshelf_lamp:
+    light.reading_lamp:
       state: true
       brightness_pct: 100
       color_temp: 500
@@ -177,10 +137,6 @@
       brightness_pct: 100
       color_temp: 500
       transition: 3600
-    light.picture_light:
-      state: true
-      brightness: 49
-      xy_color: [0.249,0.092]
 
 - name: "SinkLight"
   entities:

@@ -1,867 +1,1182 @@
-#Database maintenance
 - alias: Database Purge
   trigger:
     platform: time
-    at: '02:00:00'
+    at: 02:00:00
   action:
-    - service: recorder.purge
-      data:
-        keep_days: 10
-        repack: true
-
-#Music automation
-
-- alias: "Music playing in Living Room"
+  - service: recorder.purge
+    data:
+      keep_days: 10
+      repack: true
+  id: 20da00d6ca0644ee8cd2c9ec46d86e46
+- alias: Music playing in Living Room
   trigger:
-    - platform: state
-      entity_id: media_player.living_room_audio_2
-      to: 'playing'
-    - platform: state
-      entity_id: media_player.living_room_audio
-      to: 'playing'
-    - platform: state
-      entity_id: media_player.boxtifers_audio
-      to: 'playing'
+  - platform: state
+    entity_id: media_player.living_room_audio_2
+    to: playing
+  - platform: state
+    entity_id: media_player.living_room_audio
+    to: playing
+  - platform: state
+    entity_id: media_player.boxtifers_audio
+    to: playing
   action:
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.marantzlivingroom
-        volume_level: "0.4"
-    - delay: "00:00:05"
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.marantzlivingroom
-        source: "CD"
-    - delay: "00:00:02"
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.lenovosmartdisplay
-        volume_level: "0.1"
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.marantzlivingroom
-        volume_level: "0.4"
-
-- alias: "Music Stopped playing in Living Room"
-  trigger:
-    - platform: state
-      entity_id: media_player.living_room_audio_2
-      to: 'off'
-    - platform: state
-      entity_id: media_player.living_room_audio
-      to: 'off'
-    - platform: state
-      entity_id: media_player.boxtifers_audio
-      to: 'off'
-  action:
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.marantzlivingroom
-        volume_level: "0.58"
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.marantzlivingroom
-        source: "TV AUDIO"
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.lenovosmartdisplay
-        volume_level: "0.6"
-    - service: tts.google_say
-      entity_id: media_player.lenovosmartdisplay
-      data:
-        message: 'Music has stopped playing'
-    - condition: template
-      value_template: "{{ is_state('media_player.sony_bravia_tv', 'off') }}"
-    - delay: "00:00:05"
-    - service: media_player.turn_off
+  - service: media_player.volume_set
+    data:
       entity_id: media_player.marantzlivingroom
-
-#Other Automations
-
-- alias: "Sunrise in the Kitchen"
+      volume_level: '0.4'
+  - delay: 00:00:05
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.marantzlivingroom
+      source: CD
+  - delay: 00:00:02
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.lenovosmartdisplay
+      volume_level: '0.1'
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.marantzlivingroom
+      volume_level: '0.4'
+  id: 998a6ae0ff844d85ace9e96eab9d22ab
+- alias: Music Stopped playing in Living Room
+  trigger:
+  - platform: state
+    entity_id: media_player.living_room_audio_2
+    to: 'off'
+  - platform: state
+    entity_id: media_player.living_room_audio
+    to: 'off'
+  - platform: state
+    entity_id: media_player.boxtifers_audio
+    to: 'off'
+  action:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.marantzlivingroom
+      volume_level: '0.58'
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.marantzlivingroom
+      source: TV AUDIO
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.lenovosmartdisplay
+      volume_level: '0.6'
+  - service: tts.google_say
+    entity_id: media_player.lenovosmartdisplay
+    data:
+      message: Music has stopped playing
+  - condition: template
+    value_template: '{{ is_state(''media_player.sony_bravia_tv'', ''off'') }}'
+  - delay: 00:00:05
+  - service: media_player.turn_off
+    entity_id: media_player.marantzlivingroom
+  id: 404a57faef294bb8b22caea4e6b23aa7
+- alias: Sunrise in the Kitchen
   initial_state: false
   trigger:
-    - platform: sun
-      event: sunrise
-      offset: '-01:00:00'
+  - platform: sun
+    event: sunrise
+    offset: -01:00:00
   action:
-    - service: light.turn_on
-      entity_id: light.kitchen
-      data:
-         transition: 900
-         color_temp: 264
-    - service: tts.google_say
-      entity_id: media_player.living_room_home
-      data_template:
-        message: 'Welcome home, Chris! It is {{ now().strftime("%A, %I %M %p") }}'
-
-- alias: "Turn off everything for sleepy time"
+  - service: light.turn_on
+    entity_id: light.kitchen
+    data:
+      transition: 900
+      color_temp: 264
+  - service: tts.google_say
+    entity_id: media_player.living_room_home
+    data_template:
+      message: Welcome home, Chris! It is {{ now().strftime("%A, %I %M %p") }}
+  id: 23b0b8de8ba94c169e8b73b2739cee7b
+- id: 4713176b978d430592a3325c4e6cecfe
+  alias: Turn off everything for sleepy time
   trigger:
-    - platform: time
-      at: '23:45:00'
+  - at: '23:45:00'
+    platform: time
   action:
-    - service: homeassistant.turn_off
-      entity_id: group.bedroom_lights
-    - service: homeassistant.turn_off
-      entity_id: group.dining_room_lights
-    - service: homeassistant.turn_off
-      entity_id: group.kitchen_lights
-    - service: homeassistant.turn_off
-      entity_id: media_player.bedroom_home
-
-- alias: "Turn off baby light"
+  - entity_id: group.living_room_lights
+    service: homeassistant.turn_off
+  mode: single
+- alias: BookTime - Bedroom
   trigger:
-    - platform: time
-      at: '23:59:59'
+  - platform: time
+    at: '19:15:00'
   action:
-    - service: homeassistant.turn_off
-      entity_id: light.baby_light
-
-- alias: "Baby Time - Living Room"
+  - service: scene.turn_on
+    entity_id: scene.booktime
+  id: 3effe8114ccf4a828e540619447da743
+- alias: Change lights back to normal - Morning
   trigger:
-    - platform: time
-      at: '23:45:00'
+  - platform: time
+    at: 08:15:00
   action:
-    - service: scene.turn_on
-      entity_id: scene.babytime
-
-- alias: "BookTime - Bedroom"
+  - service: scene.turn_on
+    entity_id: scene.normallights
+  - service: homeassistant.turn_off
+    entity_id: group.all_lights
+  id: b00ad59fe31b44d6b7f9cdf16567c313
+- alias: Turn off Lights - Morning
   trigger:
-    - platform: time
-      at: '19:15:00'
+  - platform: sun
+    event: sunrise
+    offset: +00:15:00
   action:
-    - service: scene.turn_on
-      entity_id: scene.booktime
-
-- alias: "BabyTime - Bedroom"
-  trigger:
-    - platform: time
-      at: '21:00:00'
-  action:
-    - service: scene.turn_on
-      entity_id: scene.babytimebedroom
-
-- alias: "Change lights back to normal - Morning"
-  trigger:
-    - platform: time
-      at: '08:15:00'
-  action:
-    - service: scene.turn_on
-      entity_id: scene.normallights
-    - service: homeassistant.turn_off
-      entity_id: group.all_lights
-
-- alias: "Turn off Lights - Morning"
-  trigger:
-    - platform: sun
-      event: sunrise
-      offset: '+00:15:00'
-  action:
-    - service: homeassistant.turn_off
-      entity_id: group.all_lights
-#####################
-# Area for tracking
-#####################
-
+  - service: homeassistant.turn_off
+    entity_id: group.all_lights
+  id: 9a6a95fd5f7b4f2e8e2f5ab439e55455
 - id: chris_away
-  alias: 'Change Devices for Chris to Not Home'
+  alias: Change Devices for Chris to Not Home
   trigger:
-    - platform: state
-      entity_id: device_tracker.64a2f9bd08ee
-      from: 'home'
-      to: 'not_home' 
-      for:
-        minutes: 10
-    - platform: state
-      entity_id: device_tracker.google_maps_112273907813731668515
-      from: 'home'
-      to: 'not_home'
+  - platform: state
+    entity_id: device_tracker.64a2f9bd08ee
+    from: home
+    to: not_home
+    for:
+      minutes: 10
+  - platform: state
+    entity_id: device_tracker.google_maps_112273907813731668515
+    from: home
+    to: not_home
   action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.chrishome
-
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.chrishome
 - id: chris_home
-  alias: 'Change Devices for Chris to Home'
+  alias: Change Devices for Chris to Home
   trigger:
-    - platform: state
-      entity_id: device_tracker.64a2f9bd08ee
-      from: 'not_home'
-      to: 'home'
-    - platform: state
-      entity_id: device_tracker.google_maps_112273907813731668515
-      from: 'not_home'
-      to: 'home'
+  - platform: state
+    entity_id: device_tracker.64a2f9bd08ee
+    from: not_home
+    to: home
+  - platform: state
+    entity_id: device_tracker.google_maps_112273907813731668515
+    from: not_home
+    to: home
   action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.chrishome 
-
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.chrishome
 - id: kathryn_away
-  alias: 'Change Devices for Kathryn to Not Home'
-  hide_entity: true
+  alias: Change Devices for Kathryn to Not Home
   trigger:
-    - platform: state
-      entity_id: device_tracker.404e367fc94e
-      from: 'home'
-      to: 'not_home'
-      for:
-        minutes: 10
-    - platform: state
-      entity_id: device_tracker.google_maps_114377841267658724874
-      from: 'home'
-      to: 'not_home'
+  - platform: state
+    entity_id: device_tracker.404e367fc94e
+    from: home
+    to: not_home
+    for:
+      minutes: 10
+  - platform: state
+    entity_id: device_tracker.google_maps_114377841267658724874
+    from: home
+    to: not_home
   action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.kathrynhome
-
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.kathrynhome
 - id: kathryn_home
-  alias: 'Change Devices for Kathryn to Home'
+  alias: Change Devices for Kathryn to Home
   trigger:
-    - platform: state
-      entity_id: device_tracker.404e367fc94e
-      from: 'not_home'
-      to: 'home'
-    - platform: state
-      entity_id: device_tracker.google_maps_114377841267658724874
-      from: 'not_home'
-      to: 'home'
+  - platform: state
+    entity_id: device_tracker.404e367fc94e
+    from: not_home
+    to: home
+  - platform: state
+    entity_id: device_tracker.google_maps_114377841267658724874
+    from: not_home
+    to: home
   action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.kathrynhome
-
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.kathrynhome
 - id: family_home
-  alias: 'Toggle family home boolean if someone is home'
+  alias: Toggle family home boolean if someone is home
   trigger:
-    - platform: state
-      entity_id: input_boolean.kathrynhome
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.chrishome
-      to: 'on'
+  - platform: state
+    entity_id: input_boolean.kathrynhome
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.chrishome
+    to: 'on'
   action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.familyhome
-
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.familyhome
 - id: family_nothome
-  alias: 'Toggle family home boolean if both members leave home'
+  alias: Toggle family home boolean if both members leave home
   trigger:
-    - platform: state
-      entity_id: input_boolean.kathrynhome
-      to: 'off'
-    - platform: state
-      entity_id: input_boolean.chrishome
-      to: 'off'
+  - platform: state
+    entity_id: input_boolean.kathrynhome
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.chrishome
+    to: 'off'
   condition:
     condition: and
     conditions:
-      - condition: state 
-        entity_id: input_boolean.kathrynhome
-        state: 'off'
-      - condition: state 
-        entity_id: input_boolean.chrishome
-        state: 'off' 
+    - condition: state
+      entity_id: input_boolean.kathrynhome
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.chrishome
+      state: 'off'
   action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.familyhome
-
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.familyhome
 - id: turnoff_lights_nohome_famiy
-  alias: 'Turn off the Lights if no one is home'
+  alias: Turn off the Lights if no one is home
   trigger:
-    - platform: state
-      entity_id: input_boolean.familyhome
-      from: "on"
-      to: "off"
+  - platform: state
+    entity_id: input_boolean.familyhome
+    from: 'on'
+    to: 'off'
   action:
-    - service: homeassistant.turn_off
-      entity_id: group.main_lights
-    - service: lock.lock
-      entity_id: lock.front_door
-
-##########################################
-# Door-Related configs
-##########################################
-
+  - service: homeassistant.turn_off
+    entity_id: group.main_lights
+  - service: lock.lock
+    entity_id: lock.front_door
 - id: Turnoff_Lights_Door_lock_NoHome
   alias: Turn off Lights when door becomes locked and nobody is home
   trigger:
-    - platform: state
-      entity_id: lock.front_door
-      to: "locked"
+  - platform: state
+    entity_id: lock.front_door
+    to: locked
   condition:
     condition: and
     conditions:
-      - condition: state
-        entity_id: binary_sensor.front_door_open
-        state: 'off'
-      - condition: state
-        entity_id: input_boolean.familyhome
-        state: 'off'
+    - condition: state
+      entity_id: binary_sensor.front_door_open
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.familyhome
+      state: 'off'
   action:
-    - service: homeassistant.turn_off
-      entity_id: group.all_lights
-
-- id: TurnOn_Lights_unlocked 
+  - service: homeassistant.turn_off
+    entity_id: group.all_lights
+- id: TurnOn_Lights_unlocked
   alias: Turn on lights when door becomes unlocked
   trigger:
-    - platform: state
-      entity_id: lock.front_door
-      to: "unlocked"
+  - platform: state
+    entity_id: lock.front_door
+    to: unlocked
   condition:
     condition: and
     conditions:
-      - condition: sun
-        after: sunset
-        after_offset: '-01:25:00'
-      - condition: time
-        before: '23:45:00'
-      - condition: state
-        entity_id: input_boolean.familyhome
-        state: 'off'
-  action:
-    - service: automation.trigger
-      entity_id: automation.lights_to_different_brightness_fast
-
-- id: unlock_door_someone_comes_home
-  alias: 'Unlock the door when someone comes home'
-  trigger:
-    - platform: state
+    - condition: sun
+      after: sunset
+      after_offset: -01:25:00
+    - condition: time
+      before: '23:45:00'
+    - condition: state
       entity_id: input_boolean.familyhome
-      from: "off"
-      to: "on"
+      state: 'off'
   action:
-    - service: lock.unlock
-      entity_id: lock.front_door
-
-- id: unlock_front_door_morning
-  alias: 'Unlock the front door in the morning'
+  - service: automation.trigger
+    entity_id: automation.lights_to_different_brightness_fast
+- id: unlock_door_someone_comes_home
+  alias: Unlock the door when someone comes home
   trigger:
-    - platform: time
-      at: '07:35:00'
+  - platform: state
+    entity_id: input_boolean.familyhome
+    from: 'off'
+    to: 'on'
+  action:
+  - service: lock.unlock
+    entity_id: lock.front_door
+- id: unlock_front_door_morning
+  alias: Unlock the front door in the morning
+  trigger:
+  - platform: time
+    at: 07:35:00
   condition:
     condition: time
     weekday:
-      - mon
-      - tue
-      - wed
-      - thu
-      - fri
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
   action:
-    - service: lock.unlock
-      entity_id: lock.front_door
-
+  - service: lock.unlock
+    entity_id: lock.front_door
 - id: lock_front_door_night
-  alias: 'lock the front door at night'
+  alias: lock the front door at night
   trigger:
-    - platform: time
-      at: '01:30:00'
+  - platform: time
+    at: 01:30:00
   action:
-    - service: lock.lock
-      entity_id: lock.front_door
-
-##########################################
-# Home Dimmer switch configs
-##########################################
-
+  - service: lock.lock
+    entity_id: lock.front_door
 - id: dimmer_button1_click
-  alias: 'Button to turn on bedroom lights'
+  alias: Button to turn on bedroom lights
   trigger:
     platform: mqtt
-    topic: 'zigbee2mqtt/0x0017880102d61899'
+    topic: zigbee2mqtt/0x0017880102d61899
   condition:
-    - condition: template
-      value_template: "{{trigger.payload_json.action == 'on-press'}}"
+  - condition: template
+    value_template: '{{trigger.payload_json.action == ''on-press''}}'
   action:
-    - service: scene.turn_on
-      entity_id: scene.bedroomday
-
+  - service: scene.turn_on
+    entity_id: scene.bedroomday
 - id: dimmer_button1_hold
-  alias: 'Button to turn on night babytime'
+  alias: Button to turn on night babytime
   trigger:
     platform: mqtt
-    topic: 'zigbee2mqtt/0x0017880102d61899'
+    topic: zigbee2mqtt/0x0017880102d61899
   condition:
-    - condition: template
-      value_template: "{{trigger.payload_json.action == 'on-hold'}}"
+  - condition: template
+    value_template: '{{trigger.payload_json.action == ''on-hold''}}'
   action:
-    - service: scene.turn_on
-      entity_id: scene.babytimebedroom
-
+  - service: scene.turn_on
+    entity_id: scene.babytimebedroom
 - id: dimmer_button2_click
-  alias: 'Button to turn on main lights'
+  alias: Button to turn on main lights
   trigger:
     platform: mqtt
-    topic: 'zigbee2mqtt/0x0017880102d61899'
+    topic: zigbee2mqtt/0x0017880102d61899
   condition:
-    - condition: template
-      value_template: "{{trigger.payload_json.action == 'up-press'}}"
+  - condition: template
+    value_template: '{{trigger.payload_json.action == ''up-press''}}'
   action:
-    - service: automation.trigger
-      entity_id: automation.lights_to_different_brightness
-
+  - service: automation.trigger
+    entity_id: automation.lights_to_different_brightness
 - id: dimmer_button2_hold
-  alias: 'Button to make it baby time'
+  alias: Button to make it baby time
   trigger:
     platform: mqtt
-    topic: 'zigbee2mqtt/0x0017880102d61899'
+    topic: zigbee2mqtt/0x0017880102d61899
   condition:
-    - condition: template
-      value_template: "{{trigger.payload_json.action == 'up-hold'}}"
+  - condition: template
+    value_template: '{{trigger.payload_json.action == ''up-hold''}}'
   action:
-    - service: scene.turn_on
-      entity_id: scene.babytime
-
+  - service: scene.turn_on
+    entity_id: scene.babytime
 - id: dimmer_button3_click
-  alias: 'Button to Lock the front door'
+  alias: Button to Lock the front door
   trigger:
     platform: mqtt
-    topic: 'zigbee2mqtt/0x0017880102d61899'
+    topic: zigbee2mqtt/0x0017880102d61899
   condition:
-    - condition: template
-      value_template: "{{trigger.payload_json.action == 'down-press'}}"
+  - condition: template
+    value_template: '{{trigger.payload_json.action == ''down-press''}}'
   action:
-    - service: lock.lock
-      entity_id: lock.front_door
-
+  - service: lock.lock
+    entity_id: lock.front_door
 - id: dimmer_button3_hold
-  alias: 'Button to Unlock the front door'
+  alias: Button to Unlock the front door
   trigger:
     platform: mqtt
-    topic: 'zigbee2mqtt/0x0017880102d61899'
+    topic: zigbee2mqtt/0x0017880102d61899
   condition:
-    - condition: template
-      value_template: "{{trigger.payload_json.action == 'down-hold'}}"
+  - condition: template
+    value_template: '{{trigger.payload_json.action == ''down-hold''}}'
   action:
-    - service: lock.unlock
-      entity_id: lock.front_door
-
+  - service: lock.unlock
+    entity_id: lock.front_door
 - id: dimmer_button4_click
-  alias: 'Button to turn off bedroom lights'
+  alias: Button to turn off bedroom lights
   trigger:
     platform: mqtt
-    topic: 'zigbee2mqtt/0x0017880102d61899'
+    topic: zigbee2mqtt/0x0017880102d61899
   condition:
-    - condition: template
-      value_template: "{{trigger.payload_json.action == 'off-press'}}"
+  - condition: template
+    value_template: '{{trigger.payload_json.action == ''off-press''}}'
   action:
-    - service: homeassistant.turn_off
-      entity_id: group.bedroom_lights
-
+  - service: homeassistant.turn_off
+    entity_id: group.bedroom_lights
 - id: dimmer_button4_hold
-  alias: 'Button to turn off all main lights'
+  alias: Button to turn off all main lights
   trigger:
     platform: mqtt
-    topic: 'zigbee2mqtt/0x0017880102d61899'
+    topic: zigbee2mqtt/0x0017880102d61899
   condition:
-    - condition: template
-      value_template: "{{trigger.payload_json.action == 'off-hold'}}"
+  - condition: template
+    value_template: '{{trigger.payload_json.action == ''off-hold''}}'
   action:
-    - service: homeassistant.turn_off
-      entity_id: group.main_lights
-
-#Template automation
-
+  - service: homeassistant.turn_off
+    entity_id: group.main_lights
 - id: Slow Lights to different brightness based on time
   alias: slow lights to different brightness
   trigger:
-    - platform: sun
-      event: sunset
-      offset: '-01:25:00'
-    - platform: state
-      entity_id: input_boolean.familyhome
-      from: "off"
-      to: "on"
-    - platform: numeric_state
-      entity_id: sun.sun
-      value_template: '{{ state.attributes.elevation }}'
-      below: -2
+  - platform: sun
+    event: sunset
+    offset: -01:25:00
+  - platform: state
+    entity_id: input_boolean.familyhome
+    from: 'off'
+    to: 'on'
+  - platform: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    below: -2
   condition:
     condition: and
     conditions:
-      - condition: sun
-        after: sunset
-        after_offset: '-01:45:00'
-      - condition: time
-        before: '23:45:00'
-      - condition: state
-        entity_id: input_boolean.familyhome
-        state: 'on'
+    - condition: sun
+      after: sunset
+      after_offset: -01:45:00
+    - condition: time
+      before: '23:45:00'
+    - condition: state
+      entity_id: input_boolean.familyhome
+      state: 'on'
   action:
-    - service: scene.turn_on
-      data_template:
-        entity_id: >
-          {% if states.sun.sun.attributes.elevation <=-2.0 %} scene.lightsongettingdarkslow
-          {% else %} scene.lightsontimeslow {% endif %}
+  - service: scene.turn_on
+    data_template:
+      entity_id: '{% if states.sun.sun.attributes.elevation <=-1.0 %} scene.lightsongettingdarkslow
+        {% else %} scene.lightsontimeslow {% endif %}
 
+        ''
+
+        '
 - id: Lights to different brightness based on time
   alias: lights to different brightness
   trigger:
-    - platform: sun
-      event: sunset
-      offset: '-01:25:00'
-    - platform: state
-      entity_id: input_boolean.familyhome
-      from: "off"
-      to: "on"
-    - platform: numeric_state
-      entity_id: sun.sun
-      value_template: '{{ state.attributes.elevation }}'
-      below: -2
+  - platform: sun
+    event: sunset
+    offset: -01:25:00
+  - platform: state
+    entity_id: input_boolean.familyhome
+    from: 'off'
+    to: 'on'
+  - platform: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    below: -2
   condition:
     condition: and
     conditions:
-      - condition: sun
-        after: sunset
-        after_offset: '-01:45:00'
-      - condition: time
-        before: '23:45:00'
-      - condition: state
-        entity_id: input_boolean.familyhome
-        state: 'on'
+    - condition: sun
+      after: sunset
+      after_offset: -01:45:00
+    - condition: time
+      before: '23:45:00'
+    - condition: state
+      entity_id: input_boolean.familyhome
+      state: 'on'
   action:
-    - service: scene.turn_on
-      data_template:
-        entity_id: >
-          {% if states.sun.sun.attributes.elevation <=-2.0 %} scene.lightsongettingdark
-          {% else %} scene.lightsontime {% endif %}
+  - service: scene.turn_on
+    data_template:
+      entity_id: '{% if states.sun.sun.attributes.elevation <=-2.0 %} scene.lightsongettingdark
+        {% else %} scene.lightsontime {% endif %}
 
-#Plex Automation
-
+        '
+- id: Turn on Family Room Ceiling Light
+  alias: Light - Turn on Family Room Ceiling Light
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -01:25:00
+  - platform: state
+    entity_id: input_boolean.familyhome
+    from: 'off'
+    to: 'on'
+  - platform: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    below: -2
+  condition:
+    condition: and
+    conditions:
+    - condition: sun
+      after: sunset
+      after_offset: -01:45:00
+    - condition: time
+      before: '23:45:00'
+    - condition: state
+      entity_id: input_boolean.familyhome
+      state: 'on'
+  action:
+    service: light.turn_on
+    entity_id: light.rgblight1
 - id: Plex Webhook
   alias: Plex Webhook from plex web
   trigger:
     platform: webhook
     webhook_id: wceeYtDLFz8QKNQz
   action:
-    - service: mqtt.publish
-      data_template:
-        topic: 'plex/update'
-        payload_template: >
-          {{ (trigger.data['payload'] | string)[12:][:-2] | replace ("\\\\", "\\") | replace ("\\\'", "'") | replace ("\\x","?") }}
+  - service: mqtt.publish
+    data_template:
+      topic: plex/update
+      payload_template: '{{ (trigger.data[''payload''] | string)[12:][:-2] | replace
+        ("\\\\", "\\") | replace ("\\\''", "''") | replace ("\\x","?") }}
 
+        '
 - id: Plex playing in living room
   alias: Plex Playing in Living Room
   trigger:
     platform: mqtt
-    topic: 'plex/update'
+    topic: plex/update
   condition:
     condition: and
     conditions:
-      - condition: template
-        value_template: "{{trigger.payload_json.Player.title == 'BRAVIA 4K 2015'}}"
-      - condition: template
-        value_template: "{{trigger.payload_json.Player.uuid == '9c76caa9d35c7e27-com-plexapp-android'}}"
-      - condition: template        
-        value_template: "{{trigger.payload_json.event == 'media.play'}}"          
+    - condition: template
+      value_template: '{{trigger.payload_json.Player.title == ''BRAVIA 4K 2015''}}'
+    - condition: template
+      value_template: '{{trigger.payload_json.Player.uuid == ''9c76caa9d35c7e27-com-plexapp-android''}}'
+    - condition: template
+      value_template: '{{trigger.payload_json.event == ''media.play''}}'
   action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.plexlivingroom
-
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.plexlivingroom
 - id: Plex resume in living room
   alias: Plex Resume in Living Room
   trigger:
     platform: mqtt
-    topic: 'plex/update'
+    topic: plex/update
   condition:
     condition: and
     conditions:
-      - condition: template
-        value_template: "{{trigger.payload_json.Player.title == 'BRAVIA 4K 2015'}}"
-      - condition: template
-        value_template: "{{trigger.payload_json.Player.uuid == '9c76caa9d35c7e27-com-plexapp-android'}}"
-      - condition: template
-        value_template: "{{trigger.payload_json.event == 'media.resume'}}"
-      - condition: time
-        after: '21:00:00'
+    - condition: template
+      value_template: '{{trigger.payload_json.Player.title == ''BRAVIA 4K 2015''}}'
+    - condition: template
+      value_template: '{{trigger.payload_json.Player.uuid == ''9c76caa9d35c7e27-com-plexapp-android''}}'
+    - condition: template
+      value_template: '{{trigger.payload_json.event == ''media.resume''}}'
+    - condition: time
+      after: '21:00:00'
   action:
-    - service: scene.turn_on
-      entity_id: scene.lightsplex
-
+  - service: scene.turn_on
+    entity_id: scene.lightsplex
 - id: Plex stop playing in living room
   alias: Plex stop playing in Living Room
   trigger:
     platform: mqtt
-    topic: 'plex/update'
+    topic: plex/update
   condition:
     condition: and
     conditions:
-      - condition: template
-        value_template: "{{trigger.payload_json.Player.title == 'BRAVIA 4K 2015'}}"
-      - condition: template
-        value_template: "{{trigger.payload_json.Player.uuid == '9c76caa9d35c7e27-com-plexapp-android'}}"
-      - condition: template
-        value_template: "{{trigger.payload_json.event == 'media.stop'}}"
+    - condition: template
+      value_template: '{{trigger.payload_json.Player.title == ''BRAVIA 4K 2015''}}'
+    - condition: template
+      value_template: '{{trigger.payload_json.Player.uuid == ''9c76caa9d35c7e27-com-plexapp-android''}}'
+    - condition: template
+      value_template: '{{trigger.payload_json.event == ''media.stop''}}'
   action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.plexlivingroom
-
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.plexlivingroom
 - id: Plex pause in living room
   alias: Plex Living Room
   trigger:
     platform: mqtt
-    topic: 'plex/update'
+    topic: plex/update
   condition:
     condition: and
     conditions:
-      - condition: template
-        value_template: "{{trigger.payload_json.Player.title == 'BRAVIA 4K 2015'}}"
-      - condition: template
-        value_template: "{{trigger.payload_json.Player.uuid == '9c76caa9d35c7e27-com-plexapp-android'}}"
-      - condition: template
-        value_template: "{{trigger.payload_json.event == 'media.pause'}}"
-      - condition: time
-        after: '21:00:00'
+    - condition: template
+      value_template: '{{trigger.payload_json.Player.title == ''BRAVIA 4K 2015''}}'
+    - condition: template
+      value_template: '{{trigger.payload_json.Player.uuid == ''9c76caa9d35c7e27-com-plexapp-android''}}'
+    - condition: template
+      value_template: '{{trigger.payload_json.event == ''media.pause''}}'
+    - condition: time
+      after: '21:00:00'
   action:
-    - service: scene.turn_on
-      entity_id: scene.lightsplexpause
-
+  - service: scene.turn_on
+    entity_id: scene.lightsplexpause
 - id: plex_livingroom_playing
-  alias: 'Dim the lights if plex is playing in the living room'
+  alias: Dim the lights if plex is playing in the living room
   trigger:
-    - platform: state
-      entity_id: input_boolean.plexlivingroom
-      to: 'on'
+  - platform: state
+    entity_id: input_boolean.plexlivingroom
+    to: 'on'
   condition:
     condition: time
     after: '21:00:00'
   action:
-    - service: scene.turn_on
-      entity_id: scene.lightsplex
-
+  - service: scene.turn_on
+    entity_id: scene.lightsplex
 - id: plex_livingroom_stop_playing
-  alias: 'Turn the lights back on when plex has stopped'
+  alias: Turn the lights back on when plex has stopped
   trigger:
-    - platform: state
-      entity_id: input_boolean.plexlivingroom
-      to: 'off'
+  - platform: state
+    entity_id: input_boolean.plexlivingroom
+    to: 'off'
   condition:
     condition: or
     conditions:
-      - condition: time
-        after: '21:00:00'
-      - condition: time
-        before: '01:30:00'
+    - condition: time
+      after: '21:00:00'
+    - condition: time
+      before: 01:30:00
   action:
-    - service: scene.turn_on
-      data_template:
-        entity_id: >
-          {% if states.sun.sun.attributes.elevation <=-2.0 %} scene.lightsongettingdark
-          {% else %} scene.lightsontime {% endif %}
+  - service: scene.turn_on
+    data_template:
+      entity_id: '{% if states.sun.sun.attributes.elevation <=-2.0 %} scene.lightsongettingdark
+        {% else %} scene.lightsontime {% endif %}
 
-#Camera Automations
-- id: Cast Baby Cam to Smart Display
-  alias: 'Cast the baby camera to the living room smart display'
-  initial_state: false
+        '
+- alias: Set HA theme for day and night
   trigger:
-    - platform: time
-      at: '20:00:00'
+  - platform: homeassistant
+    event: start
+  - platform: state
+    entity_id: sun.sun
+    to: above_horizon
+  - platform: state
+    entity_id: sun.sun
+    to: below_horizon
   action:
-    - service: camera.play_stream
-      data:
-        entity_id: camera.bcam
-        media_player : media_player.lenovosmartdisplay
-
-#Themeing automation
-
-- alias: 'Set HA theme for day and night'
+  - service_template: frontend.set_theme
+    data_template:
+      name: "{% if states.sun.sun.state == \"above_horizon\" %}\n  'day'\n{% else\
+        \ %}\n  'night'\n{% endif %}\n"
+  id: 0043f4e094af47b08696f0c6be738eb2
+- alias: Activate all of the motion sensor resets
   trigger:
-    - platform: homeassistant
-      event: start
-    - platform: state
-      entity_id: sun.sun
-      to: above_horizon
-    - platform: state
-      entity_id: sun.sun
-      to: below_horizon
+  - platform: homeassistant
+    event: start
   action:
-    - service_template: frontend.set_theme
-      data_template:
-        name: >
-          {% if states.sun.sun.state == "above_horizon" %}
-            'day'
-          {% else %}
-            'night'
-          {% endif %}
-
-- alias: 'Activate all of the motion sensor resets'
+  - service: automation.trigger
+    entity_id: automation.set_the_living_room_motion_sensors_to_off_after_120_seconds_of_no_motion
+  - service: automation.trigger
+    entity_id: automation.set_the_kitchen_sensor_motion_sensors_to_off_after_120_seconds_of_no_motion
+  - service: automation.trigger
+    entity_id: automation.set_the_baby_motion_sensors_to_off_if_no_motion_has_been_received_after_120_seconds
+  - service: automation.trigger
+    entity_id: automation.set_the_basement_motion_sensors_to_off_if_no_motion_has_been_received_after_180_seconds
+  id: 89ff0b25144e47dfa3a9c804464f468f
+- id: 0b39c0912c924de498325308c5d5773b
+  alias: Set the basement stairs sensor motion sensors to off after 120 seconds of
+    no motion
   trigger:
-    - platform: homeassistant
-      event: start
-  action:
-    - service: automation.trigger
-      entity_id: automation.set_the_living_room_motion_sensors_to_off_after_120_seconds_of_no_motion
-    - service: automation.trigger
-      entity_id: automation.set_the_kitchen_sensor_motion_sensors_to_off_after_120_seconds_of_no_motion
-    - service: automation.trigger
-      entity_id: automation.set_the_baby_motion_sensors_to_off_if_no_motion_has_been_received_after_120_seconds
-    - service: automation.trigger
-      entity_id: automation.set_the_sink_motion_sensors_to_off_if_no_motion_has_been_received_after_120_seconds
-
-#Motion Sensor Automation
-
-- alias: 'Set the kitchen sensor motion sensors to off after 120 seconds of no motion'
-  trigger:
-  - platform: time_pattern
-    minutes: '/1'
+  - minutes: /1
+    platform: time_pattern
   condition:
   - condition: template
-    value_template: "{% if (states.binary_sensor.kitchen_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.kitchen_sensor.last_updated)) > 120)) %}true{% endif %}"
+    value_template: '{% if (states.binary_sensor.basement_stairs_sensor.state == ''on''
+      and ((as_timestamp(now())-as_timestamp(states.binary_sensor.basement_stairs_sensor.last_updated))
+      > 120)) %}true{% endif %}'
   action:
-    - service: mqtt.publish
-      data:  
-        topic: "zigbee2mqtt/0x00158d0001bd00d1"
-        payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
-
+  - data:
+      payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
+      topic: zigbee2mqtt/0x00158d0001bd00d1
+    service: mqtt.publish
+  mode: single
 - id: turn on stove light when motion is around it
-  alias: 'Turn on the stove light when motion is detected'
+  alias: Turn on the stove light when motion is detected
   trigger:
-    - platform: state
-      entity_id: binary_sensor.kitchen_sensor
-      to: "on"
+  - platform: state
+    entity_id: binary_sensor.kitchen_sensor
+    to: 'on'
   condition:
     condition: and
     conditions:
-      - condition: sun
-        after: sunrise
-        after_offset: '01:30:00'
-      - condition: time
-        before: '23:45:00'
-      - condition: state
-        entity_id: input_boolean.familyhome
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.plexlivingroom
-        state: 'off'
-  action:
-    - service: scene.turn_on
-      data_template:
-        entity_id: >
-          scene.stovelight
-
-- alias: 'Set the living room motion sensors to off after 120 seconds of no motion'
-  trigger:
-  - platform: time_pattern
-    minutes: '/1'
-  condition:
-  - condition: template
-    value_template: "{% if (states.binary_sensor.living_room_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.living_room_sensor.last_updated)) > 120)) %}true{% endif %}"
-  action:
-    - service: mqtt.publish
-      data:
-        topic: "zigbee2mqtt/0x00158d0001c123e4"
-        payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
-
-- alias: 'Set the Baby motion sensors to off if no motion has been received after 120 seconds'
-  trigger:
-  - platform: time_pattern
-    minutes: '/1'
-  condition:
-  - condition: template
-    value_template: "{% if (states.binary_sensor.baby_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.baby_sensor.last_updated)) > 120)) %}true{% endif %}"
-  action:
-    - service: mqtt.publish
-      data:
-        topic: "zigbee2mqtt/0x00158d0001c1238a"
-        payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
-
-- id: turn on baby light when motion is around it
-  alias: 'Turn on the baby light when motion is detected'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.baby_sensor
-      to: "on"
-  condition:
+    - condition: sun
+      after: sunrise
+      after_offset: 01:30:00
+    - condition: time
+      before: '23:45:00'
     - condition: state
       entity_id: input_boolean.familyhome
       state: 'on'
-    - condition: or
-      conditions:
-      - condition: sun
-        before: sunset
-        before_offset: '-01:45:00'
-      - condition: time
-        after: '00:00:01'
-  action:
-    - service: homeassistant.turn_on
-      entity_id: light.baby_light
-
-- id: turn off baby light when motion stops
-  alias: 'Turn off the baby light when motion is stopped'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.baby_sensor
-      to: 'off'
-  condition:
     - condition: state
-      entity_id: input_boolean.familyhome
-      state: 'on'
-    - condition: or
-      conditions:
-      - condition: sun
-        before: sunset
-        before_offset: '-01:45:00'
-      - condition: time
-        after: '23:45:00'
+      entity_id: input_boolean.plexlivingroom
+      state: 'off'
   action:
-    - service: homeassistant.turn_off
-      entity_id: light.baby_light
+  - service: scene.turn_on
+    data_template:
+      entity_id: 'scene.stovelight
 
-- alias: 'Set the sink motion sensors to off if no motion has been received after 120 seconds'
+        '
+- alias: Set the living room motion sensors to off after 120 seconds of no motion
   trigger:
   - platform: time_pattern
-    minutes: '/1'
+    minutes: /1
   condition:
   - condition: template
-    value_template: "{% if (states.binary_sensor.sink_sensor.state == 'on' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.sink_sensor.last_updated)) > 180)) %}true{% endif %}"
+    value_template: '{% if (states.binary_sensor.living_room_sensor.state == ''on''
+      and ((as_timestamp(now())-as_timestamp(states.binary_sensor.living_room_sensor.last_updated))
+      > 120)) %}true{% endif %}'
   action:
-    - service: mqtt.publish
-      data:
-        topic: "zigbee2mqtt/0x00158d0001c126ed"
-        payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
-
-- id: turn on sink when motion is around it
-  alias: 'Turn on the sink light when motion is detected'
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.sink_sensor
-      to: "on"
-  condition:
-    condition: and
-    conditions:
-      - condition: sun
-        after: sunrise
-        after_offset: '01:30:00'
-      - condition: time
-        before: '23:45:00'
-      - condition: state
-        entity_id: input_boolean.familyhome
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.plexlivingroom
-        state: 'off'
-  action:
-    - service: scene.turn_on
-      data_template:
-        entity_id: >
-          scene.sinklight
-
-- id: turn off sink when motion stops
-  alias: 'Turn off the sink light when motion is detected'
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/0x00158d0001c123e4
+      payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
+  id: 4cbac5fd164f4230a122c84bc00dfedb
+- alias: Set the Baby motion sensors to off if no motion has been received after 120
+    seconds
   trigger:
   - platform: time_pattern
-    minutes: '/1'
+    minutes: /1
+  condition:
+  - condition: template
+    value_template: '{% if (states.binary_sensor.baby_sensor.state == ''on'' and ((as_timestamp(now())-as_timestamp(states.binary_sensor.baby_sensor.last_updated))
+      > 120)) %}true{% endif %}'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/0x00158d0001c1238a
+      payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":47,"battery":100}'
+  id: 8d85190deea7478e93706474e879e861
+- alias: Set the basement motion sensors to off if no motion has been received after
+    180 seconds
+  trigger:
+  - platform: time_pattern
+    minutes: /1
+  condition:
+  - condition: template
+    value_template: '{% if (states.binary_sensor.basement_bathroom.state == ''on''
+      and ((as_timestamp(now())-as_timestamp(states.binary_sensor.basement_bathroom.last_updated))
+      > 180)) %}true{% endif %}'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/0x00158d0001c126ed
+      payload: '{"occupancy":false,"tamper":false,"battery_low":false,"linkquality":100,"battery":100}'
+  id: Set the basement motion sensors to off based on no activity
+- id: turn on basement bathroom lights when motion is around it
+  alias: Turn on the Basement Bathrooms lights when motion is detected
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.basement_bathroom
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.familyhome
+    state: 'on'
+  action:
+  - service: homeassistant.turn_on
+    entity_id: group.basement_bathroom_lights
+- id: turn off basement bathroom lights when motion stops
+  alias: Turn off the basement bathroom lights when motion stops
+  trigger:
+  - platform: time_pattern
+    minutes: /1
+  condition:
+  - condition: state
+    entity_id: binary_sensor.basement_bathroom
+    state: 'off'
+  action:
+  - service: homeassistant.turn_off
+    entity_id: group.basement_bathroom_lights
+- id: '1589420354436'
+  alias: Turn on the Under Stair Light When the Door is Open
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ not state_attr(''binary_sensor.0x00158d0001bf4316_contact'',''contact'')
+      }}'
+  condition:
+  - condition: template
+    value_template: '{{ trigger.from_state and trigger.from_state.attributes.contact|
+      lower == ''true'' }}'
+  action:
+  - brightness_pct: 100
+    device_id: d8b6f00c268a4ac89688fb198f10bed6
+    domain: light
+    entity_id: light.under_stairs_light
+    type: turn_on
+- id: '1589420602683'
+  alias: Turn off the Under Stair Light When the Door is Closed
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ state_attr(''binary_sensor.0x00158d0001bf4316_contact'', ''contact'')
+      }}'
+  condition:
+  - condition: template
+    value_template: '{{ trigger.from_state is defined }}'
+  action:
+  - device_id: d8b6f00c268a4ac89688fb198f10bed6
+    domain: light
+    entity_id: light.under_stairs_light
+    type: turn_off
+- id: '1589470123925'
+  alias: Turn off the Laundry Light When the Door is Closed
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ state_attr(''binary_sensor.0x00158d0001ff67da_contact'', ''contact'')
+      }}'
+  condition:
+  - condition: template
+    value_template: '{{ trigger.from_state is defined }}'
+  action:
+  - device_id: fcd9c3005c004780aa22340f3a1dfcdc
+    domain: light
+    entity_id: light.laundry_room_light_light
+    type: turn_off
+- id: '1589470201203'
+  alias: Turn on the Laundry Room Light When the Door is Open
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ not state_attr(''binary_sensor.0x00158d0001ff67da_contact'',''contact'')
+      }}'
+  condition:
+  - condition: template
+    value_template: '{{ trigger.from_state and trigger.from_state.attributes.contact|
+      lower == ''true'' }}'
+  action:
+  - brightness_pct: 100
+    device_id: fcd9c3005c004780aa22340f3a1dfcdc
+    domain: light
+    entity_id: light.laundry_room_light_light
+    type: turn_on
+- id: 3d0311392fc34e2a9c52c979e0697611
+  alias: Washer State - Start
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.tasmota_energy_power
+    above: '5'
+    for:
+      seconds: 4
+  condition:
+  - condition: template
+    value_template: '{{ states.sensor.washer_state.state != ''Washing'' }}'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: hass/state/washer
+      payload: Washing
+      retain: 'true'
+  mode: single
+- id: 670e4f5649aa46fc838840d0407dab7f
+  alias: Washer State - Idle
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.tasmota_energy_power
+    below: '5'
+    for:
+      minutes: 5
+  action:
+  - service: mqtt.publish
+    data:
+      topic: hass/state/washer
+      payload: Idle
+      retain: 'true'
+  mode: single
+- id: 21686f1a759441929f9526e7f445e673
+  alias: Washer Finished
+  trigger:
+  - platform: state
+    entity_id: sensor.washer_state
+    from: Washing
+    to: Idle
+  condition: []
+  action:
+  - service: media_player.volume_set
+    data:
+      entity_id:
+      - media_player.parents_home
+      - media_player.lenovosmartdisplay
+      - media_player.kitchen_display
+      volume_level: '0.50'
+  - service: tts.google_say
+    entity_id:
+    - media_player.parents_home
+    - media_player.lenovosmartdisplay
+    - media_player.kitchen_display
+    data_template:
+      message: Hey guess what. The washer load is done.
+  - service: notify.HomeAssistantGroup
+    data:
+      message: The Washer is done
+  mode: single
+- alias: Finnicks Random Color Light Changer
+  trigger:
+    platform: mqtt
+    topic: zigbee2mqtt/Finnicks Light Switcher
+  condition:
+    condition: or
+    conditions:
+    - condition: template
+      value_template: '{{ ''rotate_right_quick'' == trigger.payload_json.action }}'
+    - condition: template
+      value_template: '{{ ''rotate_left_quick'' == trigger.payload_json.action }}'
+    - condition: template
+      value_template: '{{ ''rotate_stop'' == trigger.payload_json.action }}'
+  action:
+    service: light.turn_on
+    entity_id: light.finnicks_light
+    data_template:
+      hs_color:
+      - '{{ (30 + (state_attr(''light.finnicks_light'', ''hs_color'')[0] or 0)) %
+        360 }}'
+      - 100
+      transition: 0.5
+  id: 23ce648301204d03bdbd2d456e1caee4
+- id: '1593831484695'
+  alias: Turn on Finnicks Colour Light
+  description: Turns on when the main light turns on in his bedroom
+  trigger:
+  - entity_id: light.finnicks_bedroom_ceiling
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data: {}
+    entity_id: light.finnicks_light
+    service: light.turn_on
+- id: '1593831541762'
+  alias: Turn off Finnicks Light
+  description: Turns off Finnicks Light when his main light turns off
+  trigger:
+  - entity_id: light.finnicks_bedroom_ceiling
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data: {}
+    entity_id: light.finnicks_light
+    service: light.turn_off
+- alias: Turn on the Baby Light
+  description: Turns on when the main light turns on in the baby spare bedroom
+  trigger:
+  - entity_id: light.spare_bedroom_main_lights
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data: {}
+    entity_id: light.baby_light
+    service: light.turn_on
+  id: 5a44f3290e0d45ce884bc698d887de2b
+- alias: Turn off the Baby Light
+  description: Turns off the Baby Light when his main light turns off
+  trigger:
+  - entity_id: light.spare_bedroom_main_lights
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data: {}
+    entity_id: light.baby_light
+    service: light.turn_off
+  id: 7b86a63ee95649acb68af7969f0faa6f
+- alias: Sync Finnicks Lights
+  trigger:
+    platform: state
+    entity_id: light.finnicks_bedroom_ceiling
+  condition:
+    condition: template
+    value_template: '{{ not is_state_attr(''light.finnicks_bedroom_ceiling'', ''brightness'',
+      states.light.finnicks_light.attributes.brightness ) }}'
+  action:
+    entity_id: light.finnicks_light
+    service: light.turn_on
+    data_template:
+      brightness_pct: '{{ state_attr(light.finnicks_bedroom_ceiling, brightness) }}'
+  id: 5e8eb1c8d8c14f7bb6ad52306b43491a
+- id: '1596859699443'
+  alias: Motion - Turn on the Basement Lights
+  description: Turns on the basement lights when motion is detected
+  trigger:
+  - entity_id: binary_sensor.basement_stairs_sensor
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.familyhome
+    state: 'on'
+  - after: '8:00'
+    before: '3:00'
+    condition: time
+  action:
+  - brightness_pct: 70
+    device_id: d0909ff7f93147c09eace5949be42cde
+    domain: light
+    entity_id: light.basement_stairs_spot_lights
+    type: turn_on
+  - device_id: 0438251f0cde47699ab0e4826a1d88d8
+    domain: switch
+    entity_id: switch.basement_lights
+    type: turn_on
+  mode: single
+- id: '1596859906991'
+  alias: Motion - Turn off the Stairs Lights
+  description: Turns them off when the Motion Sensor becomes inactive
+  trigger:
+  - entity_id: binary_sensor.basement_stairs_sensor
+    for: '10'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - device_id: d0909ff7f93147c09eace5949be42cde
+    domain: light
+    entity_id: light.basement_stairs_spot_lights
+    type: turn_off
+  mode: single
+- id: '1596860301138'
+  alias: Turn off Basement Lights
+  description: Turns off the basement lights if nobody is there
+  trigger:
+  - entity_id: device_tracker.cbox_ml3
+    for: 00:00:30
+    from: home
+    platform: state
+    to: not_home
+  - entity_id: device_tracker.boxtifers_rig
+    for: 00:00:30
+    from: home
+    platform: state
+    to: not_home
+  - entity_id: binary_sensor.basement_stairs_sensor
+    for: 00:00:30
+    platform: state
+    to: 'off'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: device_tracker.cbox_ml2
+      state: not_home
+    - condition: state
+      entity_id: device_tracker.boxtifers_rig
+      state: not_home
+  action:
+  - device_id: 0438251f0cde47699ab0e4826a1d88d8
+    domain: switch
+    entity_id: switch.basement_lights
+    type: turn_off
+  - device_id: d0909ff7f93147c09eace5949be42cde
+    domain: light
+    entity_id: light.basement_stairs_spot_lights
+    type: turn_off
+  mode: single
+- alias: Notify - Door Opens
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.front_door_open
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.familyhome
+    state: 'off'
+  action:
+  - service: notify.HomeAssistantGroup
+    data:
+      message: The front door just opened and nobody is home...
+  id: 29a890e882c7462fb8cbe8cae9dba2a7
+- alias: Notify - Lights On
+  trigger:
+  - platform: time_pattern
+    minutes: /30
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.familyhome
+      state: 'off'
+    - condition: state
+      entity_id: group.all_lights
+      state: 'on'
+  action:
+  - service: notify.HomeAssistantGroup
+    data:
+      message: The lights are on in the house and nobody is home. Turning off all
+        the lights.
+  - service: homeassistant.turn_off
+    entity_id: group.all_lights
+  id: eb4ce57bcab144178947c9a583b94bed
+- id: '1605464120016'
+  alias: Dryer Finished
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.dryer_state
+    from: Dryer has started
+    to: Dryer has finished
+  condition: []
+  action:
+  - service: tts.google_say
+    entity_id:
+    - media_player.parents_home
+    - media_player.lenovosmartdisplay
+    - media_player.kitchen_display
+    data_template:
+      message: The dryer is done.
+  - service: notify.homeassistantgroup
+    data:
+      message: The Dryer is done
+  mode: single
+- id: '1605993499284'
+  alias: Turn on Outside Lights
+  description: ''
+  trigger:
+  - platform: time
+    at: '17:30'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 3185599cbe104f459be40ab8f1ade991
+    entity_id: switch.cesmartplug1
+    domain: switch
+  mode: single
+- alias: Outside Light Random Colour
+  trigger:
+    platform: time_pattern
+    seconds: /2
   condition:
     condition: and
     conditions:
-      - condition: state
-        entity_id: binary_sensor.kitchen_sensor
-        state: 'off'
-      - condition: state
-        entity_id: binary_sensor.sink_sensor
-        state: 'off'
+    - condition: sun
+      after: sunset
+      after_offset: -00:45:00
+    - condition: time
+      before: '23:45:00'
   action:
-    - service: homeassistant.turn_off
-      entity_id: light.sink_light
-    - service: homeassistant.turn_off
-      entity_id: light.stove_light
+    service: light.turn_on
+    entity_id: light.outsidelight
+    data_template:
+      hs_color:
+      - '{{ (30 + (state_attr(''light.outsidelight'', ''hs_color'')[0] or 0)) % 360
+        }}'
+      - 100
+      transition: 1
+- alias: Turn off Outside Light
+  trigger:
+    platform: time
+    at: 01:45:00
+  condition: []
+  action:
+  - service: homeassistant.turn_off
+    entity_id: light.outsidelight
 
-#MQTT Automations
+- alias: Notify - Garage Door is Open
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.garage_door_sensor
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.familyhome
+    state: 'off'
+  action:
+  - service: notify.HomeAssistantGroup
+    data:
+      message: The garage door is open and nobody is home
 
+- alias: Notify - Garage Door has been left open
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.garage_door_sensor
+    to: 'on'
+    for: "00:10:00"
+  condition:
+  - condition: state
+    entity_id: input_boolean.familyhome
+    state: 'on'
+  action:
+  - service: notify.HomeAssistantGroup
+    data:
+      message: The garage door has been open for 10 minutes.
+
+- alias: Turn off the printer in the middle of the night
+  trigger:
+   platform: state
+   entity_id: sensor.octoprint_current_state
+   from: 'Printing'
+   to: 'Operational' 
+  condition:
+    condition: and
+    conditions:
+    - condition: time
+      after: '01:00:00'
+    - condition: time
+      before: '09:00:00'
+  action:
+    service: homeassistant.turn_on
+    entity_id: script.3dprint_off

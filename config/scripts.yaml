@@ -1,0 +1,14 @@
+3dprint_off:
+  alias: Turn off 3d printer after 10 minutes
+  sequence:
+  - delay:
+      minutes: 1
+  - condition: state
+    entity_id: sensor.octoprint_current_state
+    state: 'Operational'
+  - service: rest_command.shutdown_octoprint
+  - delay:
+      minutes: 3
+  - service: switch.turn_off
+    data:
+      entity_id: switch.cesmartplug2

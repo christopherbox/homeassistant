@@ -1,3 +1,10 @@
+#binary sensors
+binary_sensor:
+  - platform: octoprint
+    montiored_conditions:
+      - Printing
+      - Printing Error
+
 #Cloud
 cloud:
 
@@ -81,11 +88,6 @@ updater:
 # Wake on LAN
 wake_on_lan:
 
-#weather
-weather:
-  - platform: darksky
-    api_key: !secret darksky_api
-
 ###########################################
 ####BEGIN IMPORTING ALL INCLUDE ACTIONS####
 ###########################################
@@ -108,9 +110,19 @@ input_boolean: !include inputboolean.yaml
 
 light: !include_dir_merge_list mqttlights
 
+lutron_caseta: !include lutron_caseta.yaml
+
 media_player: !include mediaplayer.yaml
 
 mqtt: !include mqtt.yaml
+
+nest: !include nest.yaml
+
+octoprint: !include octoprint.yaml
+
+panel_iframe: !include panel_iframe.yaml
+
+rest_command: !include rest_command.yaml
 
 notify: !include notify.yaml
 
@@ -126,6 +138,9 @@ shell_command: !include shell_command.yaml
 
 switch: !include switch.yaml
 
+telegram_bot: !include telegram.yaml
 #yi: !include yi.yaml
+
+weather: !include weather.yaml
 
 zone: !include zone.yaml

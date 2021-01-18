@@ -5,3 +5,10 @@
 - platform: ffmpeg
   input: !secret yicam_input_string
   name: Basement Camera
+
+- platform: environment_canada
+
+- platform: mjpeg
+  name: OctoPrint
+  still_image_url: http://octopi.chrisbox.ca/webcam/?action=snapshot
+  mjpeg_url: http://octopi.chrisbox.ca/webcam/?action=stream

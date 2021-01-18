@@ -1,0 +1,4 @@
+host: !secret octopi_ip
+api_key: !secret octopi_api
+bed: true
+

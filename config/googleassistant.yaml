@@ -16,3 +16,12 @@ entity_config:
   camera.bcam:
     name: "Baby Camera"
     expose: true
+  camera.basement_camera:
+    name: "Basement Camera"
+    expose: true
+  switch.cesmartplug1:
+    name: "Outdoor Christmas Lights"
+    expose: true
+  switch.garage_door_switch:
+    name: !secret google_assistant_1
+    expose: true

@@ -11,3 +11,9 @@ google_assistant_service.json
 secrets.yaml
 .storage
 ssl
+caseta.key
+caseta.crt
+caseta-bridge.crt
+badnest.yaml
+config/tts/*
+config/panel_iframe.yaml

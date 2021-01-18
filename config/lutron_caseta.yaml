@@ -1,0 +1,4 @@
+host: !secret casetaip
+keyfile: caseta/caseta.key
+certfile: caseta/caseta.crt
+ca_certs: caseta/caseta-bridge.crt

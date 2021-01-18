@@ -1,0 +1,5 @@
+shutdown_octoprint:
+  url: http://octopi.chrisbox.ca/api/system/commands/core/shutdown
+  method: POST
+  headers: 
+    X-Api-Key: !secret octopi_api

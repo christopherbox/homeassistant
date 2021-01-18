@@ -2,3 +2,11 @@
   name: LivingRoomTV
   host: !secret braviaip
   position: top-right
+
+- platform: telegram
+  name: HomeAssistantGroup
+  chat_id: "-397447749"
+
+- platform: telegram
+  name: ChrisDirect
+  chat_id: "626316526"
